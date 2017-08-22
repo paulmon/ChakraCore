@@ -24,14 +24,22 @@ void DelayLoadLibrary::Ensure(DWORD dwFlags)
 {
     if (!m_isInit)
     {
+#ifndef _CHAKRACOREUWP
         m_hModule = LoadLibraryEx(GetLibraryName(), nullptr, dwFlags);
         m_isInit = true;
+#else
+        __debugbreak();
+#endif
     }
 }
 
 void DelayLoadLibrary::EnsureFromSystemDirOnly()
 {
+#ifndef _CHAKRACOREUWP
     Ensure(LOAD_LIBRARY_SEARCH_SYSTEM32);
+#else
+    __debugbreak();
+#endif
 }
 
 

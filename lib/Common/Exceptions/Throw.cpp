@@ -276,7 +276,11 @@ namespace Js {
 #ifdef ENABLE_DEBUG_CONFIG_OPTIONS
         if (Js::Configuration::Global.flags.IsEnabled(Js::AssertBreakFlag))
         {
+#ifdef _CHAKRACOREUWP
+            __debugbreak();
+#else
             DebugBreak();
+#endif
             return false;
         }
         if (Js::Configuration::Global.flags.IsEnabled(Js::AssertIgnoreFlag))
@@ -302,7 +306,7 @@ namespace Js {
 
         // The following code is applicable only when we are hosted in an
         // GUI environment
-#if defined(ENABLE_DEBUG_CONFIG_OPTIONS) && defined(_WIN32)
+#if defined(ENABLE_DEBUG_CONFIG_OPTIONS) && defined(_WIN32) && !defined(_CHAKRACOREUWP)
         // Then if DumpOncrashFlag is not specified it directly returns,
         // otherwise if will raise a non-continuable exception, generate the dump and terminate the process.
         // the popup message box might be useful when testing in IE

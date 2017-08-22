@@ -269,7 +269,10 @@ namespace PlatformAgnostic
 
             DWORD dwFlags = caseFlags == CaseFlags::CaseFlagsUpper ? LCMAP_UPPERCASE : LCMAP_LOWERCASE;
             dwFlags |= LCMAP_LINGUISTIC_CASING;
-
+#ifdef _CHAKRACOREUWP
+            __debugbreak();
+            return 0;
+#else
             LCID lcid = GetUserDefaultLCID();
 
             int translatedStringLength = LCMapStringW(lcid, dwFlags, sourceString, sourceLength, destString, destLength);
@@ -281,6 +284,7 @@ namespace PlatformAgnostic
 
             Assert(translatedStringLength >= 0);
             return (uint32) translatedStringLength;
+#endif
         }
 
         uint32 ChangeStringCaseInPlace(CaseFlags caseFlags, char16* sourceString, uint32 sourceLength)

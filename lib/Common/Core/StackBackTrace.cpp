@@ -46,7 +46,7 @@ StackBackTrace::Print()
         retValue += DbgHelpSymbolManager::PrintSymbol(address);
         retValue += Output::Print(_u("\n"));
     }
-#else
+#elif !defined (_CHAKRACOREUWP)
     char** f = backtrace_symbols(this->stackBackTrace, this->framesCount);
     if (f)
     {

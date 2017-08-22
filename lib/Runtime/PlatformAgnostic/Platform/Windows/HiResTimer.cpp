@@ -26,7 +26,12 @@ namespace DateTime
         DWORD dwTimeAdjustment = 0;
         DWORD dwTimeIncrement = 0;
         BOOL fAdjustmentDisabled = FALSE;
+#ifdef _CHAKRACOREUWP
+        BOOL fSuccess = FALSE;
+        fAdjustmentDisabled = TRUE;
+#else
         BOOL fSuccess = GetSystemTimeAdjustment(&dwTimeAdjustment, &dwTimeIncrement, &fAdjustmentDisabled);
+#endif
         if (!fSuccess || fAdjustmentDisabled)
         {
             return 1;

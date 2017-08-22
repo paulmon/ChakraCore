@@ -62,7 +62,7 @@ void ConfigParser::ParseOnModuleLoad(CmdLineArgsParser& parser, HANDLE hmod)
 
 void ConfigParser::ParseRegistry(CmdLineArgsParser &parser)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     HKEY hk;
     bool includeUserHive = true;
 
@@ -92,7 +92,7 @@ void ConfigParser::ParseRegistry(CmdLineArgsParser &parser)
 
 void ConfigParser::ParseRegistryKey(HKEY hk, CmdLineArgsParser &parser)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     DWORD dwSize;
     DWORD dwValue;
 
@@ -603,7 +603,11 @@ HRESULT ConfigParser::SetOutputFile(const WCHAR* outputFile, const WCHAR* openMo
     {
 
         // we need to output to %temp% directory in wwa. we don't have permission otherwise.
+#ifdef _CHAKRACOREUWP
+        if (GetTempPath(_MAX_PATH, fileName))
+#else
         if (GetEnvironmentVariable(_u("temp"), fileName, _MAX_PATH) != 0)
+#endif
         {
             wcscat_s(fileName, _MAX_PATH, _u("\\"));
             const char16 * fileNameOnly = wcsrchr(outputFile, _u('\\'));

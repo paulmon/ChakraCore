@@ -84,7 +84,11 @@ AutoSystemInfo::Initialize()
 #endif
     allocationGranularityPageCount = dwAllocationGranularity / dwPageSize;
 
+#ifdef _CHAKRACOREUWP
+    isWindows8OrGreater = true;
+#else
     isWindows8OrGreater = IsWindows8OrGreater();
+#endif
 
     binaryName[0] = _u('\0');
 
@@ -99,6 +103,9 @@ AutoSystemInfo::Initialize()
     initialized = true;
 #endif
 
+#ifdef _CHAKRACOREUWP
+    disableDebugScopeCapture = true;
+#else
     WCHAR DisableDebugScopeCaptureFlag[MAX_PATH];
     if (::GetEnvironmentVariable(_u("JS_DEBUG_SCOPE"), DisableDebugScopeCaptureFlag, _countof(DisableDebugScopeCaptureFlag)) != 0)
     {
@@ -108,6 +115,7 @@ AutoSystemInfo::Initialize()
     {
         disableDebugScopeCapture = false;
     }
+#endif
 
     this->supportsOnlyMultiThreadedCOM = false;
 #if defined(__ANDROID__) || defined(__IOS__)
@@ -464,7 +472,7 @@ HRESULT AutoSystemInfo::GetJscriptFileVersion(DWORD* majorVersion, DWORD* minorV
 //
 HRESULT AutoSystemInfo::GetVersionInfo(__in LPCWSTR pszPath, DWORD* majorVersion, DWORD* minorVersion)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     DWORD   dwTemp;
     DWORD   cbVersionSz;
     HRESULT hr = E_FAIL;

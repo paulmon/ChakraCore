@@ -18,7 +18,7 @@ void ReportFatalException(
 
     if (IsDebuggerPresent())
     {
-        DebugBreak();
+        __debugbreak();
     }
 
 #ifdef DISABLE_SEH

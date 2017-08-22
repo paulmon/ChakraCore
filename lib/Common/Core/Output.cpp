@@ -392,7 +392,7 @@ void Output::DirectPrint(char16 const * string)
     AutoCriticalSection autocs(&s_critsect);
 
     // xplat-todo: support console color
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     WORD oldValue = 0;
     BOOL restoreColor = FALSE;
     HANDLE hConsole = NULL;
@@ -412,7 +412,7 @@ void Output::DirectPrint(char16 const * string)
     fwprintf(stdout, _u("%s"), string);
 
     // xplat-todo: support console color
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     if (restoreColor)
     {
         SetConsoleTextAttribute(hConsole, oldValue);
@@ -511,7 +511,7 @@ Output::SetConsoleForeground(WORD color)
     AutoCriticalSection autocs(&s_critsect);
 
     // xplat-todo: support console color
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     _CONSOLE_SCREEN_BUFFER_INFO info;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 

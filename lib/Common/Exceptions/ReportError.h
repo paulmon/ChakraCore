@@ -94,7 +94,7 @@ inline LONG FatalExceptionFilter(
         {
             TerminateProcess(GetCurrentProcess(), (UINT)DBG_TERMINATE_PROCESS);
         }
-        DebugBreak();
+        __debugbreak();
     }
 
     return EXCEPTION_CONTINUE_SEARCH;

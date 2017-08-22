@@ -23,7 +23,9 @@
         _CHAKRACOREBUILD;
         _WIN32_WINNT=$(Win32_WinNTVersion);
         WINVER=$(Win32_WinNTVersion);
-        WIN32_LEAN_AND_MEAN=1
+        WIN32_LEAN_AND_MEAN=1;
+        WINAPI_FAMILY=WINAPI_FAMILY_APP;
+        _CHAKRACOREUWP=1
       </PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(BuildJIT)'=='false'">
         %(PreprocessorDefinitions);
@@ -62,12 +64,10 @@
   <!-- Link dependencies for projects that link with Chakra libraries -->
   <PropertyGroup>
     <ChakraCommonLinkDependencies>
-        oleaut32.lib;
-        version.lib
+        onecore.lib
     </ChakraCommonLinkDependencies>
     <RLCommonLinkDependencies>
-        kernel32.lib;
-        ole32.lib
+        onecore.lib
     </RLCommonLinkDependencies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(DebugBuild)'=='true'">

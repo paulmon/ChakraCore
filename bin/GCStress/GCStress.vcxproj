@@ -31,7 +31,6 @@
         $(ChakraCommonMemoryLib);
         $(ChakraRuntimePlatformAgnostic);
         $(ChakraCommonLinkDependencies);
-        Advapi32.lib;
         %(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>

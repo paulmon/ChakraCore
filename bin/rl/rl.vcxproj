@@ -23,8 +23,6 @@
       <AdditionalDependencies>
         %(AdditionalDependencies);
         $(RLCommonLinkDependencies);
-        oleaut32.lib;
-        xmllite.lib;
         $(NoThrowNewLib)
       </AdditionalDependencies>
     </Link>

@@ -31,6 +31,7 @@ namespace DateTime
 
     static HINSTANCE TryLoadLibrary()
     {
+#ifndef _CHAKRACOREUWP
         if (g_timezonedll == NULL)
         {
             HMODULE hLocal = LoadLibraryExW(_u("api-ms-win-core-timezone-l1-1-0.dll"),
@@ -55,6 +56,7 @@ namespace DateTime
                 }
             }
         }
+#endif
         return g_timezonedll;
     }
 

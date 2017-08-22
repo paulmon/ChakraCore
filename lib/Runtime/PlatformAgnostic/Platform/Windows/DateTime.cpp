@@ -51,7 +51,7 @@ namespace DateTime
             // todo: check possible winrt issue
             // !defined(__cplusplus_winrt)
             // see https://msdn.microsoft.com/en-us/library/90s5c885.aspx
-    #if defined(_WIN32)
+    #if defined(_WIN32) && !defined(_CHAKRACOREUWP)
             _tzset();
     #endif
             lastTimeZoneUpdateTickCount = tickCount;

@@ -84,7 +84,7 @@
 // Config options
 #define CONFIG_PARSE_CONFIG_FILE 1
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #define CONFIG_CONSOLE_AVAILABLE 1
 #define CONFIG_RICH_TRACE_FORMAT 1
 #else
@@ -109,7 +109,7 @@
 #endif
 //#define INTL_ICU_ALLOW_HYBRID 1       // NOTE: uncomment this line to test INTL_ICU SxS with INTL_WINGLOB while INTL_ICU is in-development
 #endif
-#if defined(_WIN32) && (!defined(INTL_ICU) || (defined(INTL_ICU) && defined(INTL_ICU_ALLOW_HYBRID)))
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP) && (!defined(INTL_ICU) || (defined(INTL_ICU) && defined(INTL_ICU_ALLOW_HYBRID)))
 #define INTL_WINGLOB 1
 #endif
 
@@ -120,7 +120,7 @@
 #define SUPPORT_FIXED_FIELDS_ON_PATH_TYPES          // *** TODO: Won't build if disabled currently
 
 // xplat-todo: revisit these features
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP) 
 // dep: TIME_ZONE_INFORMATION, DaylightTimeHelper, Windows.Globalization
 #define ENABLE_GLOBALIZATION
 // dep: IActiveScriptProfilerCallback, IActiveScriptProfilerHeapEnum
@@ -133,8 +133,10 @@
 #define ENABLE_CUSTOM_ENTROPY
 #endif
 
+#ifndef _CHAKRACOREUWP
 // dep: IDebugDocumentContext
 #define ENABLE_SCRIPT_DEBUGGING
+#endif
 
 // GC features
 #define BUCKETIZE_MEDIUM_ALLOCATIONS 1              // *** TODO: Won't build if disabled currently
@@ -479,7 +481,7 @@
 
 // xplat-todo: revive FaultInjection on non-Win32 platforms
 // currently depends on io.h
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #define FAULT_INJECTION
 #endif
 #define RECYCLER_NO_PAGE_REUSE
@@ -493,7 +495,7 @@
 #define VALIDATE_ARRAY
 
 // xplat-todo: Do we need dump generation for non-Win32 platforms?
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #define GENERATE_DUMP
 #endif
 #endif
@@ -699,9 +701,9 @@
 #endif
 #endif
 
-#ifndef _WIN32
+//#ifndef _WIN32
 #define DISABLE_SEH 1
-#endif
+//#endif
 
 //----------------------------------------------------------------------------------------------------
 // Dependent flags
@@ -734,7 +736,7 @@
 #endif
 
 #if defined(STACK_BACK_TRACE) || defined(CONTROL_FLOW_GUARD_LOGGER)
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #define DBGHELP_SYMBOL_MANAGER
 #endif
 #endif

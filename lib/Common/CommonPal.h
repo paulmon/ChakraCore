@@ -201,7 +201,9 @@ inline void DebugBreak()
 #define SCRIPT_E_RECORDED                _HRESULT_TYPEDEF_(0x86664004L)
 
 #define GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS        (0x00000004)
+#endif // __WIN32
 
+#if !defined(_WIN32) || defined(_CHAKRACOREUWP)
 typedef
 enum tagBREAKPOINT_STATE
     {
@@ -270,6 +272,9 @@ typedef DWORD DBGPROP_INFO_FLAGS;
 
 #define DBGPROP_INFO_ALL ((((((DBGPROP_INFO_NAME | DBGPROP_INFO_TYPE ) | DBGPROP_INFO_VALUE) | DBGPROP_INFO_FULLNAME) | DBGPROP_INFO_ATTRIBUTES) | DBGPROP_INFO_DEBUGPROP))
 
+#endif
+
+#ifndef _WIN32
 // _countof
 #if defined _M_X64 || defined _M_ARM || defined _M_ARM64
 #define _UNALIGNED __unaligned

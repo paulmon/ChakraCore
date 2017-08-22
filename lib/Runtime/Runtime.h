@@ -4,6 +4,7 @@
 //-------------------------------------------------------------------------------------------------------
 #pragma once
 
+//#ifndef _CHAKRACOREUWP
 #include "Common.h"
 
 //========================
@@ -25,14 +26,14 @@ enum SymbolType : byte;
 // Regex forward decl
 namespace UnifiedRegex
 {
-    struct RegexPattern;
-    template <typename T> class StandardChars;      // Used by ThreadContext.h
-    struct TrigramAlphabet;
-    struct RegexStacks;
+   struct RegexPattern;
+   template <typename T> class StandardChars;      // Used by ThreadContext.h
+   struct TrigramAlphabet;
+   struct RegexStacks;
 #if ENABLE_REGEX_CONFIG_OPTIONS
-    class DebugWriter;
-    struct RegexStats;
-    class RegexStatsDatabase;
+   class DebugWriter;
+   struct RegexStats;
+   class RegexStatsDatabase;
 #endif
 };
 
@@ -64,278 +65,278 @@ class JITJavascriptString;
 
 namespace Js
 {
-    //
-    // Forward declarations
-    //
-    class CharClassifier;
-    typedef int32 MessageId;
-    /* enum */ struct PropertyIds;
-    class DebugDocument;
-    struct Utf8SourceInfo;
-    struct CallInfo;
-    struct InlineeCallInfo;
-    struct InlineCache;
-    class PolymorphicInlineCache;
-    struct Arguments;
-    class StringDictionaryWrapper;
-    struct ByteCodeDumper;
-    struct ByteCodeReader;
-    struct ByteCodeWriter;
-    enum class EnumeratorFlags : byte;
-    struct ForInCache;
-    class JavascriptStaticEnumerator;
-    class ForInObjectEnumerator;
-    class JavascriptConversion;
-    class JavascriptDate;
-    class JavascriptVariantDate;
-    class DateImplementation;
-    class BufferString;
-    class BufferStringBuilder;
-    class ConcatString;
-    class CompoundString;
-    class JavascriptBoolean;
-    class JavascriptBooleanObject;
-    class JavascriptSymbol;
-    class JavascriptSymbolObject;
-    class JavascriptProxy;
-    class JavascriptReflect;
-    class JavascriptEnumeratorIterator;
-    class JavascriptArrayIterator;
-    enum class JavascriptArrayIteratorKind;
-    class JavascriptMapIterator;
-    enum class JavascriptMapIteratorKind;
-    class JavascriptSetIterator;
-    enum class JavascriptSetIteratorKind;
-    class JavascriptStringIterator;
-    class JavascriptListIterator;
-    class JavascriptPromise;
-    class JavascriptPromiseCapability;
-    class JavascriptPromiseReaction;
-    class JavascriptPromiseAsyncSpawnExecutorFunction;
-    class JavascriptPromiseAsyncSpawnStepArgumentExecutorFunction;
-    class JavascriptPromiseCapabilitiesExecutorFunction;
-    class JavascriptPromiseResolveOrRejectFunction;
-    class JavascriptPromiseReactionTaskFunction;
-    class JavascriptPromiseResolveThenableTaskFunction;
-    class JavascriptPromiseAllResolveElementFunction;
-    struct JavascriptPromiseAllResolveElementFunctionRemainingElementsWrapper;
-    struct JavascriptPromiseResolveOrRejectFunctionAlreadyResolvedWrapper;
-    class JavascriptGenerator;
-    class LiteralString;
-    class ArenaLiteralString;
-    class JavascriptStringObject;
-    struct PropertyDescriptor;
-    class Type;
-    class DynamicType;
-    class ScriptFunctionType;
-    class DynamicTypeHandler;
-    class DeferredTypeHandlerBase;
-    template <bool IsPrototype> class NullTypeHandler;
-    template<size_t size> class SimpleTypeHandler;
-    class PathTypeHandler;
-    class IndexPropertyDescriptor;
-    class DynamicObject;
-    class ArrayObject;
-    class WithScopeObject;
-    class SpreadArgument;
-    class JavascriptString;
-    class StringCopyInfo;
-    class StringCopyInfoStack;
-    class ObjectPrototypeObject;
-    class PropertyString;
-    class ArgumentsObject;
-    class HeapArgumentsObject;
-    class ActivationObject;
-    class JavascriptNumber;
-    class JavascriptNumberObject;
+   //
+   // Forward declarations
+   //
+   class CharClassifier;
+   typedef int32 MessageId;
+   /* enum */ struct PropertyIds;
+   class DebugDocument;
+   struct Utf8SourceInfo;
+   struct CallInfo;
+   struct InlineeCallInfo;
+   struct InlineCache;
+   class PolymorphicInlineCache;
+   struct Arguments;
+   class StringDictionaryWrapper;
+   struct ByteCodeDumper;
+   struct ByteCodeReader;
+   struct ByteCodeWriter;
+   enum class EnumeratorFlags : byte;
+   struct ForInCache;
+   class JavascriptStaticEnumerator;
+   class ForInObjectEnumerator;
+   class JavascriptConversion;
+   class JavascriptDate;
+   class JavascriptVariantDate;
+   class DateImplementation;
+   class BufferString;
+   class BufferStringBuilder;
+   class ConcatString;
+   class CompoundString;
+   class JavascriptBoolean;
+   class JavascriptBooleanObject;
+   class JavascriptSymbol;
+   class JavascriptSymbolObject;
+   class JavascriptProxy;
+   class JavascriptReflect;
+   class JavascriptEnumeratorIterator;
+   class JavascriptArrayIterator;
+   enum class JavascriptArrayIteratorKind;
+   class JavascriptMapIterator;
+   enum class JavascriptMapIteratorKind;
+   class JavascriptSetIterator;
+   enum class JavascriptSetIteratorKind;
+   class JavascriptStringIterator;
+   class JavascriptListIterator;
+   class JavascriptPromise;
+   class JavascriptPromiseCapability;
+   class JavascriptPromiseReaction;
+   class JavascriptPromiseAsyncSpawnExecutorFunction;
+   class JavascriptPromiseAsyncSpawnStepArgumentExecutorFunction;
+   class JavascriptPromiseCapabilitiesExecutorFunction;
+   class JavascriptPromiseResolveOrRejectFunction;
+   class JavascriptPromiseReactionTaskFunction;
+   class JavascriptPromiseResolveThenableTaskFunction;
+   class JavascriptPromiseAllResolveElementFunction;
+   struct JavascriptPromiseAllResolveElementFunctionRemainingElementsWrapper;
+   struct JavascriptPromiseResolveOrRejectFunctionAlreadyResolvedWrapper;
+   class JavascriptGenerator;
+   class LiteralString;
+   class ArenaLiteralString;
+   class JavascriptStringObject;
+   struct PropertyDescriptor;
+   class Type;
+   class DynamicType;
+   class ScriptFunctionType;
+   class DynamicTypeHandler;
+   class DeferredTypeHandlerBase;
+   template <bool IsPrototype> class NullTypeHandler;
+   template<size_t size> class SimpleTypeHandler;
+   class PathTypeHandler;
+   class IndexPropertyDescriptor;
+   class DynamicObject;
+   class ArrayObject;
+   class WithScopeObject;
+   class SpreadArgument;
+   class JavascriptString;
+   class StringCopyInfo;
+   class StringCopyInfoStack;
+   class ObjectPrototypeObject;
+   class PropertyString;
+   class ArgumentsObject;
+   class HeapArgumentsObject;
+   class ActivationObject;
+   class JavascriptNumber;
+   class JavascriptNumberObject;
 
-    class ScriptContextProfiler;
+   class ScriptContextProfiler;
 
-    struct RestrictedErrorStrings;
-    class JavascriptError;
+   struct RestrictedErrorStrings;
+   class JavascriptError;
 
 #ifdef ENABLE_SIMDJS
 //SIMD_JS
-    // SIMD
-    class JavascriptSIMDObject;
-    class SIMDFloat32x4Lib;
-    class JavascriptSIMDFloat32x4;
-    class SIMDFloat64x2Lib;
-    class JavascriptSIMDFloat64x2;
-    class SIMDInt32x4Lib;
-    class JavascriptSIMDInt32x4;
-    class SIMDInt16x8Lib;
-    class JavascriptSIMDInt16x8;
-    class SIMDInt8x16Lib;
-    class JavascriptSIMDInt8x16;
-    class SIMDUint16x8Lib;
-    class JavascriptSIMDUint16x8;
-    class SIMDUint8x16Lib;
-    class JavascriptSIMDUint8x16;
-    class SIMDUint32x4Lib;
-    class JavascriptSIMDUint32x4;
-    class SIMDBool32x4Lib;
-    class JavascriptSIMDBool32x4;
-    class SIMDBool8x16Lib;
-    class JavascriptSIMDBool8x16;
-    class SIMDBool16x8Lib;
-    class JavascriptSIMDBool16x8;
+   // SIMD
+   class JavascriptSIMDObject;
+   class SIMDFloat32x4Lib;
+   class JavascriptSIMDFloat32x4;
+   class SIMDFloat64x2Lib;
+   class JavascriptSIMDFloat64x2;
+   class SIMDInt32x4Lib;
+   class JavascriptSIMDInt32x4;
+   class SIMDInt16x8Lib;
+   class JavascriptSIMDInt16x8;
+   class SIMDInt8x16Lib;
+   class JavascriptSIMDInt8x16;
+   class SIMDUint16x8Lib;
+   class JavascriptSIMDUint16x8;
+   class SIMDUint8x16Lib;
+   class JavascriptSIMDUint8x16;
+   class SIMDUint32x4Lib;
+   class JavascriptSIMDUint32x4;
+   class SIMDBool32x4Lib;
+   class JavascriptSIMDBool32x4;
+   class SIMDBool8x16Lib;
+   class JavascriptSIMDBool8x16;
+   class SIMDBool16x8Lib;
+   class JavascriptSIMDBool16x8;
 #endif // #ifdef ENABLE_SIMDJS
 
-    class RecyclableObject;
-    class JavascriptRegExp;
-    class JavascriptRegularExpressionResult;
-    template<typename T> class SparseArraySegment;
-    enum class DynamicObjectFlags : uint16;
-    class JavascriptArray;
-    class JavascriptNativeIntArray;
+   class RecyclableObject;
+   class JavascriptRegExp;
+   class JavascriptRegularExpressionResult;
+   template<typename T> class SparseArraySegment;
+   enum class DynamicObjectFlags : uint16;
+   class JavascriptArray;
+   class JavascriptNativeIntArray;
 #if ENABLE_COPYONACCESS_ARRAY
-    class JavascriptCopyOnAccessNativeIntArray;
+   class JavascriptCopyOnAccessNativeIntArray;
 #endif
-    class JavascriptNativeFloatArray;
-    class ES5Array;
-    class JavascriptFunction;
-    class ScriptFunction;
-    class ScriptFunctionWithInlineCache;
-    class StackScriptFunction;
-    class GeneratorVirtualScriptFunction;
-    class JavascriptGeneratorFunction;
-    class JavascriptAsyncFunction;
-    class AsmJsScriptFunction;
-    class JavascriptRegExpConstructor;
-    class JavascriptRegExpEnumerator;
-    class BoundFunction;
-    class JavascriptMap;
-    class JavascriptSet;
-    class JavascriptWeakMap;
-    class JavascriptWeakSet;
-    class DynamicObject;
-    class HostObjectBase;
-    class RootObjectBase;
-    class ModuleRoot;
-    class GlobalObject;
-    class Math;
-    class JavascriptOperators;
-    class JavascriptLibrary;
-    class JavascriptEncodeURI;
-    class JavascriptEncodeURIComponent;
-    class JavascriptDecodeURI;
-    class JavascriptDecodeURIComponent;
-    class DataView;
-    struct ConstructorCache;
-    enum class OpCode : ushort;
-    enum class OpCodeAsmJs : ushort;
-    /* enum */ struct OpLayoutType;
-    /* enum */ struct OpLayoutTypeAsmJs;
-    class ExceptionBase;
-    class OutOfMemoryException;
-    class ScriptDebug;
-    class ScriptContext;
-    struct NativeModule;
-    template <class T> class RcRef;
-    class TaggedInt;
-    class TaggedNumber;
-    struct InterpreterStackFrame;
-    struct ScriptEntryExitRecord;
-    class JavascriptStackWalker;
-    struct AsmJsCallStackLayout;
-    class JavascriptCallStackLayout;
-    class Throw;
-    struct Tick;
-    struct TickDelta;
-    class ByteBlock;
-    class FunctionInfo;
-    class FunctionProxy;
-    class FunctionBody;
-    class ParseableFunctionInfo;
-    struct StatementLocation;
-    class EntryPointInfo;
-    struct LoopHeader;
-    class InternalString;
-    /* enum */ struct JavascriptHint;
-    /* enum */ struct BuiltinFunction;
-    class EnterScriptObject;
-    class PropertyRecord;
-    struct IsInstInlineCache;
-    class EntryPointInfo;
-    class PolymorphicInlineCacheInfo;
-    class PropertyGuard;
+   class JavascriptNativeFloatArray;
+   class ES5Array;
+   class JavascriptFunction;
+   class ScriptFunction;
+   class ScriptFunctionWithInlineCache;
+   class StackScriptFunction;
+   class GeneratorVirtualScriptFunction;
+   class JavascriptGeneratorFunction;
+   class JavascriptAsyncFunction;
+   class AsmJsScriptFunction;
+   class JavascriptRegExpConstructor;
+   class JavascriptRegExpEnumerator;
+   class BoundFunction;
+   class JavascriptMap;
+   class JavascriptSet;
+   class JavascriptWeakMap;
+   class JavascriptWeakSet;
+   class DynamicObject;
+   class HostObjectBase;
+   class RootObjectBase;
+   class ModuleRoot;
+   class GlobalObject;
+   class Math;
+   class JavascriptOperators;
+   class JavascriptLibrary;
+   class JavascriptEncodeURI;
+   class JavascriptEncodeURIComponent;
+   class JavascriptDecodeURI;
+   class JavascriptDecodeURIComponent;
+   class DataView;
+   struct ConstructorCache;
+   enum class OpCode : ushort;
+   enum class OpCodeAsmJs : ushort;
+   /* enum */ struct OpLayoutType;
+   /* enum */ struct OpLayoutTypeAsmJs;
+   class ExceptionBase;
+   class OutOfMemoryException;
+   class ScriptDebug;
+   class ScriptContext;
+   struct NativeModule;
+   template <class T> class RcRef;
+   class TaggedInt;
+   class TaggedNumber;
+   struct InterpreterStackFrame;
+   struct ScriptEntryExitRecord;
+   class JavascriptStackWalker;
+   struct AsmJsCallStackLayout;
+   class JavascriptCallStackLayout;
+   class Throw;
+   struct Tick;
+   struct TickDelta;
+   class ByteBlock;
+   class FunctionInfo;
+   class FunctionProxy;
+   class FunctionBody;
+   class ParseableFunctionInfo;
+   struct StatementLocation;
+   class EntryPointInfo;
+   struct LoopHeader;
+   class InternalString;
+   /* enum */ struct JavascriptHint;
+   /* enum */ struct BuiltinFunction;
+   class EnterScriptObject;
+   class PropertyRecord;
+   struct IsInstInlineCache;
+   class EntryPointInfo;
+   class PolymorphicInlineCacheInfo;
+   class PropertyGuard;
 
-    // asm.js
-    namespace ArrayBufferView
-    {
-        enum ViewType: uint8;
-    }
-    struct EmitExpressionInfo;
-    struct AsmJsModuleMemory;
-    namespace AsmJsLookupSource
-    {
-        enum Source: int;
-    }
-    struct AsmJsByteCodeWriter;
-    class AsmJsArrayView;
-    class AsmJsType;
-    class AsmJsRetType;
-    class AsmJsVarType;
-    class AsmJsSymbol;
-    class AsmJsVarBase;
-    class AsmJsVar;
-    class AsmJsConstantImport;
-    class AsmJsArgument;
-    class AsmJsFunc;
-    class AsmJsFunctionDeclaration;
-    class AsmJsFunctionInfo;
-    class AsmJsModuleInfo;
-    class AsmJsGlobals;
-    class AsmJsImportFunction;
-    class AsmJsTypedArrayFunction;
-    class AsmJsMathFunction;
-    class AsmJsMathConst;
+   // asm.js
+   namespace ArrayBufferView
+   {
+       enum ViewType: uint8;
+   }
+   struct EmitExpressionInfo;
+   struct AsmJsModuleMemory;
+   namespace AsmJsLookupSource
+   {
+       enum Source: int;
+   }
+   struct AsmJsByteCodeWriter;
+   class AsmJsArrayView;
+   class AsmJsType;
+   class AsmJsRetType;
+   class AsmJsVarType;
+   class AsmJsSymbol;
+   class AsmJsVarBase;
+   class AsmJsVar;
+   class AsmJsConstantImport;
+   class AsmJsArgument;
+   class AsmJsFunc;
+   class AsmJsFunctionDeclaration;
+   class AsmJsFunctionInfo;
+   class AsmJsModuleInfo;
+   class AsmJsGlobals;
+   class AsmJsImportFunction;
+   class AsmJsTypedArrayFunction;
+   class AsmJsMathFunction;
+   class AsmJsMathConst;
 #ifdef ASMJS_PLAT
-    Var AsmJsExternalEntryPoint(Js::RecyclableObject* entryObject, Js::CallInfo callInfo, ...);
-    class AsmJsCodeGenerator;
-    class AsmJsEncoder;
+   Var AsmJsExternalEntryPoint(Js::RecyclableObject* entryObject, Js::CallInfo callInfo, ...);
+   class AsmJsCodeGenerator;
+   class AsmJsEncoder;
 #endif
-    struct MathBuiltin;
-    struct ExclusiveContext;
-    class AsmJsModuleCompiler;
-    class AsmJSCompiler;
-    class AsmJSByteCodeGenerator;
-    enum AsmJSMathBuiltinFunction: int;
-    //////////////////////////////////////////////////////////////////////////
-    typedef JsUtil::WeakReferenceDictionary<PropertyId, PropertyString, PowerOf2SizePolicy> PropertyStringCacheMap;
+   struct MathBuiltin;
+   struct ExclusiveContext;
+   class AsmJsModuleCompiler;
+   class AsmJSCompiler;
+   class AsmJSByteCodeGenerator;
+   enum AsmJSMathBuiltinFunction: int;
+   //////////////////////////////////////////////////////////////////////////
+   typedef JsUtil::WeakReferenceDictionary<PropertyId, PropertyString, PowerOf2SizePolicy> PropertyStringCacheMap;
 
-    extern const FrameDisplay NullFrameDisplay;
-    extern const FrameDisplay StrictNullFrameDisplay;
+   extern const FrameDisplay NullFrameDisplay;
+   extern const FrameDisplay StrictNullFrameDisplay;
 
-    enum ImplicitCallFlags : BYTE
-    {
-        ImplicitCall_HasNoInfo = 0x00,
-        ImplicitCall_None = 0x01,
-        ImplicitCall_ToPrimitive = 0x02 | ImplicitCall_None,
-        ImplicitCall_Accessor = 0x04 | ImplicitCall_None,
-        ImplicitCall_NonProfiledAccessor = 0x08 | ImplicitCall_None,
-        ImplicitCall_External = 0x10 | ImplicitCall_None,
-        ImplicitCall_Exception = 0x20 | ImplicitCall_None,
-        ImplicitCall_NoOpSet = 0x40 | ImplicitCall_None,
-        ImplicitCall_All = 0x7F,
+   enum ImplicitCallFlags : BYTE
+   {
+       ImplicitCall_HasNoInfo = 0x00,
+       ImplicitCall_None = 0x01,
+       ImplicitCall_ToPrimitive = 0x02 | ImplicitCall_None,
+       ImplicitCall_Accessor = 0x04 | ImplicitCall_None,
+       ImplicitCall_NonProfiledAccessor = 0x08 | ImplicitCall_None,
+       ImplicitCall_External = 0x10 | ImplicitCall_None,
+       ImplicitCall_Exception = 0x20 | ImplicitCall_None,
+       ImplicitCall_NoOpSet = 0x40 | ImplicitCall_None,
+       ImplicitCall_All = 0x7F,
 
-        // Implicit call that is not caused by operations for the instruction (e.g. QC and GC dispose)
-        // where we left script and enter script again. (Also see BEGIN_LEAVE_SCRIPT_INTERNAL)
-        // This doesn't count as an implicit call on the recorded profile, but if it happens on JIT'ed code
-        // it will still cause a bailout. Should happen very rarely.
-        ImplicitCall_AsyncHostOperation = 0x80
-    };
+       // Implicit call that is not caused by operations for the instruction (e.g. QC and GC dispose)
+       // where we left script and enter script again. (Also see BEGIN_LEAVE_SCRIPT_INTERNAL)
+       // This doesn't count as an implicit call on the recorded profile, but if it happens on JIT'ed code
+       // it will still cause a bailout. Should happen very rarely.
+       ImplicitCall_AsyncHostOperation = 0x80
+   };
 }
 
 namespace TTD
 {
-    //typedef for a pin set (ensure that objects are kept live).
-    typedef JsUtil::BaseHashSet<Js::PropertyRecord*, Recycler> PropertyRecordPinSet;
-    typedef JsUtil::BaseHashSet<Js::FunctionBody*, Recycler> FunctionBodyPinSet;
-    typedef JsUtil::BaseHashSet<Js::RecyclableObject*, Recycler> ObjectPinSet;
-    typedef JsUtil::BaseHashSet<Js::FrameDisplay*, Recycler> EnvironmentPinSet;
-    typedef JsUtil::BaseHashSet<Js::Var, Recycler> SlotArrayPinSet;
+   //typedef for a pin set (ensure that objects are kept live).
+   typedef JsUtil::BaseHashSet<Js::PropertyRecord*, Recycler> PropertyRecordPinSet;
+   typedef JsUtil::BaseHashSet<Js::FunctionBody*, Recycler> FunctionBodyPinSet;
+   typedef JsUtil::BaseHashSet<Js::RecyclableObject*, Recycler> ObjectPinSet;
+   typedef JsUtil::BaseHashSet<Js::FrameDisplay*, Recycler> EnvironmentPinSet;
+   typedef JsUtil::BaseHashSet<Js::Var, Recycler> SlotArrayPinSet;
 }
 
 #include "PlatformAgnostic/ChakraPlatform.h"
@@ -350,20 +351,20 @@ const Js::ModuleID kmodGlobal = 0;
 
 class SourceContextInfo;
 
-#if defined(ENABLE_SCRIPT_DEBUGGING) && defined(_WIN32)
+#if defined(ENABLE_SCRIPT_DEBUGGING) && defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #include "activdbg100.h"
 #endif
 
-#ifndef NTDDI_WIN10
+#if !defined(NTDDI_WIN10) || defined(_CHAKRACOREUWP)
 // These are only defined for the Win10 SDK and above
 // Consider: Refactor to avoid needing these?
 typedef
 enum tagDEBUG_EVENT_INFO_TYPE
 {
-    DEIT_GENERAL = 0,
-    DEIT_ASMJS_IN_DEBUGGING = (DEIT_GENERAL + 1),
-    DEIT_ASMJS_SUCCEEDED = (DEIT_ASMJS_IN_DEBUGGING + 1),
-    DEIT_ASMJS_FAILED = (DEIT_ASMJS_SUCCEEDED + 1)
+   DEIT_GENERAL = 0,
+   DEIT_ASMJS_IN_DEBUGGING = (DEIT_GENERAL + 1),
+   DEIT_ASMJS_SUCCEEDED = (DEIT_ASMJS_IN_DEBUGGING + 1),
+   DEIT_ASMJS_FAILED = (DEIT_ASMJS_SUCCEEDED + 1)
 } DEBUG_EVENT_INFO_TYPE;
 
 #define SDO_ENABLE_LIBRARY_STACK_FRAME ((SCRIPT_DEBUGGER_OPTIONS)0x8)
@@ -580,34 +581,35 @@ enum tagDEBUG_EVENT_INFO_TYPE
 //The "helper" methods below are to resolve external symbol references to our delay-loaded libraries.
 inline HRESULT WindowsCreateString(_In_reads_opt_(length) const WCHAR * sourceString, UINT32 length, _Outptr_result_maybenull_ _Result_nullonfailure_ HSTRING * string)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCreateString(sourceString, length, string);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCreateString(sourceString, length, string);
 }
 
 inline HRESULT WindowsCreateStringReference(_In_reads_opt_(length + 1) const WCHAR * sourceString, UINT32 length, _Out_ HSTRING_HEADER * header, _Outptr_result_maybenull_ _Result_nullonfailure_ HSTRING * string)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCreateStringReference(sourceString, length, header, string);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCreateStringReference(sourceString, length, header, string);
 }
 
 inline HRESULT WindowsDeleteString(_In_opt_ HSTRING string)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsDeleteString(string);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsDeleteString(string);
 }
 
 inline PCWSTR WindowsGetStringRawBuffer(_In_opt_ HSTRING string, _Out_opt_ UINT32 * length)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsGetStringRawBuffer(string, length);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsGetStringRawBuffer(string, length);
 }
 
 inline HRESULT WindowsCompareStringOrdinal(_In_opt_ HSTRING string1, _In_opt_ HSTRING string2, _Out_ INT32 * result)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCompareStringOrdinal(string1, string2, result);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsCompareStringOrdinal(string1, string2, result);
 }
 
 inline HRESULT WindowsDuplicateString(_In_opt_ HSTRING original, _Outptr_result_maybenull_ _Result_nullonfailure_ HSTRING *newString)
 {
-    return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsDuplicateString(original, newString);
+   return ThreadContext::GetContextForCurrentThread()->GetWindowsGlobalizationLibrary()->WindowsDuplicateString(original, newString);
 }
 
 #endif // INTL_WINGLOB
 #endif // ENABLE_INTL_OBJECT
 #endif // #ifndef USED_IN_STATIC_LIB
+//#endif // #ifndef _CHAKRACOREUWP

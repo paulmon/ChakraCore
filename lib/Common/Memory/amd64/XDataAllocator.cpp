@@ -118,7 +118,7 @@ void XDataAllocator::ClearFreeList()
 /* static */
 void XDataAllocator::Register(XDataAllocation * xdataInfo, ULONG_PTR functionStart, DWORD functionSize)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     ULONG_PTR baseAddress = functionStart;
     xdataInfo->pdata.BeginAddress = (DWORD)(functionStart - baseAddress);
     xdataInfo->pdata.EndAddress = (DWORD)(xdataInfo->pdata.BeginAddress + functionSize);
@@ -152,7 +152,7 @@ void XDataAllocator::Register(XDataAllocation * xdataInfo, ULONG_PTR functionSta
     Assert(runtimeFunction != NULL);
 #endif
 
-#else  // !_WIN32
+#elif !defined(_CHAKRACOREUWP)  // !_WIN32
     Assert(ReadHead(xdataInfo->address));  // should be non-empty .eh_frame
     __REGISTER_FRAME(xdataInfo->address);
 #endif
@@ -161,7 +161,7 @@ void XDataAllocator::Register(XDataAllocation * xdataInfo, ULONG_PTR functionSta
 /* static */
 void XDataAllocator::Unregister(XDataAllocation * xdataInfo)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
     // Delete the table
     if (AutoSystemInfo::Data.IsWin8OrLater())
     {
@@ -173,7 +173,7 @@ void XDataAllocator::Unregister(XDataAllocation * xdataInfo)
         Assert(success);
     }
 
-#else  // !_WIN32
+#elif !defined(_CHAKRACOREUWP)  // !_WIN32
     Assert(ReadHead(xdataInfo->address));  // should be non-empty .eh_frame
     __DEREGISTER_FRAME(xdataInfo->address);
 #endif

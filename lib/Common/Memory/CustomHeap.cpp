@@ -257,7 +257,7 @@ Allocation* Heap<TAlloc, TPreReservedAlloc>::Alloc(size_t bytes, ushort pdataCou
             return nullptr;
         }
 
-#if defined(DBG)
+#if defined(DBG) && !defined(_CHAKRACOREUWP)
         MEMORY_BASIC_INFORMATION memBasicInfo;
         size_t resultBytes = VirtualQueryEx(this->processHandle, page->address, &memBasicInfo, sizeof(memBasicInfo));
         if (resultBytes == 0)
@@ -434,7 +434,7 @@ Allocation* Heap<TAlloc, TPreReservedAlloc>::AllocLargeObject(size_t bytes, usho
 #endif
     }
 
-#if defined(DBG)
+#if defined(DBG) && !defined(_CHAKRACOREUWP)
     MEMORY_BASIC_INFORMATION memBasicInfo;
     size_t resultBytes = VirtualQueryEx(this->processHandle, address, &memBasicInfo, sizeof(memBasicInfo));
     if (resultBytes == 0)

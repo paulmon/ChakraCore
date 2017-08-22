@@ -60,7 +60,7 @@ HANDLE CreateSection(size_t sectionSize, bool commit)
 
 void UnmapView(HANDLE process, PVOID address)
 {
-#if USEFILEMAP2
+#if USEFILEMAP2 && !defined(_CHAKRACOREUWP)
     UnmapViewOfFile2(process, address, 0);
 #else
     NtdllLibrary::Instance->UnmapViewOfSection(process, address);

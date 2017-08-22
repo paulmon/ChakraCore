@@ -33,11 +33,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>
         %(AdditionalDependencies);
-        oleaut32.lib;
-        ole32.lib;
-        kernel32.lib;
-        Rpcrt4.lib;
-        version.lib;
+        onecore.lib;
       </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
