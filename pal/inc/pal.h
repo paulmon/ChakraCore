@@ -3806,7 +3806,7 @@ typedef struct nlsversioninfo {
 #define CSTR_EQUAL         2
 #define CSTR_GREATER_THAN  3
 
-#if ENABLE_DOWNLEVEL_FOR_NLS
+#if ENABLE_DOWNLEVEL_FOR_NLS || _CHAKRACOREUWP
 
 
 PALIMPORT

@@ -1973,6 +1973,7 @@ Function:
 
 See MSDN doc.
 --*/
+#error wtf?
 BOOL
 PALAPI
 VirtualProtect(

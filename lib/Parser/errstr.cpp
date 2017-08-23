@@ -18,6 +18,7 @@ static BOOL FGetStringFromLibrary(HMODULE hlib, int istring, __out_ecount(cchMax
     Assert(0 < cchMax);
     AssertArrMem(psz, cchMax);
 
+#ifdef ENABLE_GLOBALIZATION
     HGLOBAL hgl = NULL;
     WCHAR * pchRes = NULL;
     HRSRC hrsrc;
@@ -27,6 +28,7 @@ static BOOL FGetStringFromLibrary(HMODULE hlib, int istring, __out_ecount(cchMax
     DWORD cbRes;
     int itable = ((WORD)istring >> 4) + 1;
     istring &= 0x0F;
+#endif
     BOOL fRet = FALSE;
 
 #ifdef ENABLE_GLOBALIZATION

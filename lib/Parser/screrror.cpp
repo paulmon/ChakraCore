@@ -200,7 +200,7 @@ void ScriptException::GetError(HRESULT *phr, EXCEPINFO *pei)
 {
     AssertMem(phr);
     AssertMemN(pei);
-
+#ifndef _CHAKRACOREUWP
     if (HR(SCRIPT_E_RECORDED) == *phr)
     {
         Assert(FAILED(HR(ei.scode)));
@@ -218,6 +218,7 @@ void ScriptException::GetError(HRESULT *phr, EXCEPINFO *pei)
             }
         }
     }
+#endif
 }
 
 
@@ -240,6 +241,9 @@ void CompileScriptException::Free()
 
 HRESULT  CompileScriptException::ProcessError(IScanner * pScan, HRESULT hr, ParseNode * pnodeBase)
 {
+#ifdef _CHAKRACOREUWP
+    return S_OK;
+#else
     // fill in the ScriptException structure
     Free();
     ei.scode = GetScode(MapHr(hr));
@@ -281,4 +285,5 @@ HRESULT  CompileScriptException::ProcessError(IScanner * pScan, HRESULT hr, Pars
         Assert(hr == WASMERR_WasmCompileError || hr == JSERR_AsmJsCompileError || hr == ERRnoMemory || hr == VBSERR_OutOfStack || hr == E_OUTOFMEMORY || hr == E_FAIL || hr == E_ABORT);
     }
     return SCRIPT_E_RECORDED;
+#endif // _CHAKRACOREUWP
 }

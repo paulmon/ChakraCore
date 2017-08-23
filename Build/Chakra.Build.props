@@ -12,6 +12,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <NoThrowNewLib>nothrownew.obj</NoThrowNewLib>
+    <BuildJIT>False</BuildJIT>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunCodeAnalysis)'=='' AND '$(Configuration)'=='Release'">
     <RunCodeAnalysis>$(BuildWithCodeAnalysis)</RunCodeAnalysis>
@@ -24,7 +25,6 @@
         _WIN32_WINNT=$(Win32_WinNTVersion);
         WINVER=$(Win32_WinNTVersion);
         WIN32_LEAN_AND_MEAN=1;
-        WINAPI_FAMILY=WINAPI_FAMILY_APP;
         _CHAKRACOREUWP=1
       </PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(BuildJIT)'=='false'">
@@ -38,6 +38,10 @@
       <PreprocessorDefinitions Condition="'$(ForceSWB)'=='true'">
         %(PreprocessorDefinitions);
         GLOBAL_ENABLE_WRITE_BARRIER=1
+      </PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(ConfigurationType)'!='Application'">
+        %(PreprocessorDefinitions);
+        WINAPI_FAMILY=WINAPI_FAMILY_APP
       </PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(NTDDIVersion)'!=''" >%(PreprocessorDefinitions);NTDDI_VERSION=$(NTDDIVersion)</PreprocessorDefinitions>
       <!-- REVIEW: These are warning are introduced when moving to VS2015 tools, may want to clean these up -->
@@ -62,12 +66,20 @@
   </ItemDefinitionGroup>
 
   <!-- Link dependencies for projects that link with Chakra libraries -->
-  <PropertyGroup>
+  <PropertyGroup  Condition="'$(ConfigurationType)'!='Application'">
     <ChakraCommonLinkDependencies>
         onecore.lib
     </ChakraCommonLinkDependencies>
-    <RLCommonLinkDependencies>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ConfigurationType)'=='Application'">
+    <ChakraCommonLinkDependencies>
+        oleaut32.lib;
+        version.lib;
         onecore.lib
+    </ChakraCommonLinkDependencies>
+    <RLCommonLinkDependencies>
+        kernel32.lib;
+        ole32.lib
     </RLCommonLinkDependencies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(DebugBuild)'=='true'">

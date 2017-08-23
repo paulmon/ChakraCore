@@ -692,7 +692,7 @@
 #endif //_M_IX86
 
 #ifndef PDATA_ENABLED
-#if defined(_M_ARM32_OR_ARM64) || defined(_M_X64)
+#if (defined(_M_ARM32_OR_ARM64) || defined(_M_X64)) && !defined(_CHAKRACOREUWP)
 #define PDATA_ENABLED 1
 #define ALLOC_XDATA (true)
 #else
@@ -701,9 +701,9 @@
 #endif
 #endif
 
-//#ifndef _WIN32
+#if !defined(_WIN32) || defined(_CHAKRACOREUWP)
 #define DISABLE_SEH 1
-//#endif
+#endif
 
 //----------------------------------------------------------------------------------------------------
 // Dependent flags
@@ -725,7 +725,9 @@
 
 #if !(defined(__clang__) && defined(_M_ARM32_OR_ARM64)) // xplat-todo: ARM
 #if DBG || defined(CHECK_MEMORY_LEAK) || defined(LEAK_REPORT) || defined(TRACK_DISPATCH) || defined(ENABLE_TRACE) || defined(RECYCLER_PAGE_HEAP)
+#ifndef _CHAKRACOREUWP
 #define STACK_BACK_TRACE
+#endif
 #endif
 #endif
 

@@ -2004,6 +2004,8 @@ ThreadContext::EnsureJITThreadContext(bool allowPrereserveAlloc)
     JITManager::HandleServerCallResult(hr, RemoteCallType::StateUpdate);
 
     return m_remoteThreadContextInfo != nullptr;
+#else
+    return false;
 #endif
 }
 #endif

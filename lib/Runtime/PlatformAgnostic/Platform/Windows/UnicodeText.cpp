@@ -297,6 +297,7 @@ namespace PlatformAgnostic
                 return 0;
             }
 
+#ifndef _CHAKRACOREUWP
             if (caseFlags == CaseFlagsUpper)
             {
                 return (uint32) CharUpperBuff(sourceString, sourceLength);
@@ -305,6 +306,7 @@ namespace PlatformAgnostic
             {
                 return (uint32) CharLowerBuff(sourceString, sourceLength);
             }
+#endif
 
             AssertMsg(false, "Invalid flags passed to ChangeStringCaseInPlace");
             return 0;
@@ -416,7 +418,11 @@ namespace PlatformAgnostic
         {
             // CompareStringW called with these flags is equivalent to calling StrCmpLogicalW
             // and we have the added advantage of not having to link with shlwapi.lib just for one function
+#if _CHAKRACOREUWP
+            int i = _wcsicmp(string1, string2);
+#else
             int i = CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE | SORT_DIGITSASNUMBERS, string1, -1, string2, -1);
+#endif
 
             return i - CSTR_EQUAL;
         }

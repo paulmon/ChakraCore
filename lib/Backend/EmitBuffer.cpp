@@ -295,7 +295,11 @@ EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::AllocateBuffer(__in si
 
 #if DBG
     MEMORY_BASIC_INFORMATION memBasicInfo;
+#ifdef _CHAKRACOREUWP
+    size_t resultBytes = VirtualQuery(allocation->allocation->address, &memBasicInfo, sizeof(memBasicInfo));
+#else
     size_t resultBytes = VirtualQueryEx(this->processHandle, allocation->allocation->address, &memBasicInfo, sizeof(memBasicInfo));
+#endif
     Assert(resultBytes == 0 || memBasicInfo.Protect == PAGE_EXECUTE);
 #endif
 
@@ -373,7 +377,11 @@ bool EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBufferForIn
         return false;
     }
 
+#ifdef _CHAKRACOREUWP
+    __debugbreak();
+#else
     FlushInstructionCache(this->processHandle, pBuffer, bufferSize);
+#endif
 
     return true;
 }
@@ -395,11 +403,15 @@ EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBuffer(TEmitBuff
     Assert(allocation != nullptr);
 
     BYTE *currentDestBuffer = destBuffer + allocation->GetBytesUsed();
+#ifndef _CHAKRACOREUWP
     char *bufferToFlush = allocation->allocation->address + allocation->GetBytesUsed();
+#endif
     Assert(allocation->BytesFree() >= bytes + alignPad);
 
     size_t bytesLeft = bytes + alignPad;
+#ifndef _CHAKRACOREUWP
     size_t sizeToFlush = bytesLeft;
+#endif
 
     // Copy the contents and set the alignment pad
     while(bytesLeft != 0)
@@ -459,8 +471,11 @@ EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBuffer(TEmitBuff
             return false;
         }
     }
-
+#ifdef _CHAKRACOREUWP
+    __debugbreak();
+#else
     FlushInstructionCache(this->processHandle, bufferToFlush, sizeToFlush);
+#endif
 #if DBG_DUMP
     this->totalBytesCode += bytes;
 #endif

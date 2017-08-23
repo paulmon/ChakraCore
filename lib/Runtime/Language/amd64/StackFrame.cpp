@@ -27,6 +27,35 @@ Js::Amd64StackFrame::~Amd64StackFrame()
     }
 }
 
+
+#ifdef _CHAKRACOREUWP
+// TODO: cleanup
+//NTSYSAPI
+VOID
+NTAPI
+RtlCaptureContext(
+    _Out_ PCONTEXT ContextRecord
+)
+{}
+
+//NTSYSAPI
+PEXCEPTION_ROUTINE
+NTAPI
+RtlVirtualUnwind(
+    _In_ DWORD HandlerType,
+    _In_ DWORD64 ImageBase,
+    _In_ DWORD64 ControlPc,
+    _In_ PRUNTIME_FUNCTION FunctionEntry,
+    _Inout_ PCONTEXT ContextRecord,
+    _Out_ PVOID * HandlerData,
+    _Out_ PDWORD64 EstablisherFrame,
+    _Inout_opt_ PKNONVOLATILE_CONTEXT_POINTERS ContextPointers
+)
+{
+    return 0;
+}
+#endif
+
 // InitializeByReturnAddress.
 // Parameters:
 //  unwindToAddress: specifies the address we need to unwind the stack before any walks can be done.

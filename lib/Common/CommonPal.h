@@ -466,6 +466,32 @@ DWORD __cdecl CharUpperBuffW(const char16* lpsz, DWORD  cchLength);
 
 #endif // _WIN32
 
+#ifdef _CHAKRACOREUWP
+
+WINBASEAPI
+UINT
+WINAPI
+GetTempFileNameA(
+    _In_ LPCSTR lpPathName,
+    _In_ LPCSTR lpPrefixString,
+    _In_ UINT uUnique,
+    _Out_writes_(MAX_PATH) LPSTR lpTempFileName
+);
+
+//WINBASEAPI
+//_Ret_maybenull_
+//HMODULE
+//WINAPI
+//LoadLibraryW(
+//    _In_ LPCWSTR lpLibFileName
+//);
+
+inline void DebugBreak()
+{
+    __debugbreak();
+}
+
+#endif // _CHAKRACOREUWP
 
 // Use intsafe.h for internal builds (currently missing some files with stdint.h)
 #if defined(_WIN32) && defined(NTBUILD)

@@ -62,6 +62,7 @@ static BOOL AttachProcess(HANDLE hmod)
     // Needed to make sure that only ChakraCore is loaded into the process
     // This is unnecessary on Linux since there aren't other flavors of
     // Chakra binaries that can be loaded into the process
+#ifndef _CHAKRACOREUWP
     const char16 *engine = szChakraCoreLock;
     if (::FindAtom(szChakraLock) != 0)
     {
@@ -70,6 +71,7 @@ static BOOL AttachProcess(HANDLE hmod)
     }
     lockedDll = ::AddAtom(engine);
     AssertMsg(lockedDll, "Failed to lock chakracore.dll");
+#endif
 
 #ifdef ENABLE_BASIC_TELEMETRY
     g_TraceLoggingClient = NoCheckHeapNewStruct(TraceLoggingClient);
@@ -130,8 +132,10 @@ EXTERN_C BOOL WINAPI DllMain(HINSTANCE hmod, DWORD dwReason, PVOID pvReserved)
         return TRUE;
 
     case DLL_PROCESS_DETACH:
+#ifndef _CHAKRACOREUWP
         lockedDll = ::DeleteAtom(lockedDll);
         AssertMsg(lockedDll == 0, "Failed to release the lock for chakracore.dll");
+#endif
 
 #ifdef DYNAMIC_PROFILE_STORAGE
         DynamicProfileStorage::Uninitialize();

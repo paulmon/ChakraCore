@@ -437,12 +437,8 @@ __declspec(thread) char *cmpbuf2 = NULL;
 #pragma warning (disable:4996)
 char * getenv_unsafe(const char * varName)
 {
-#ifndef _CHAKRACOREUWP
-    // Use getenv instead of getenv_s or _dupenv_s to simplify calls to the API.
-    return getenv(varName);
-#else
-    return NULL;
-#endif
+   // Use getenv instead of getenv_s or _dupenv_s to simplify calls to the API.
+   return getenv(varName);
 }
 
 FILE * fopen_unsafe(const char * filename, const char * mode)
@@ -465,10 +461,8 @@ char* strerror_unsafe(int errnum)
 void
 CleanUp(BOOL fKilled)
 {
-#ifndef _CHAKRACOREUWP
    if (FStatus)
       SetConsoleTitle(SavedConsoleTitle);
-#endif
 
    // Try to remove temporary files. The temp files may
    // be in use, so we might not be able to.

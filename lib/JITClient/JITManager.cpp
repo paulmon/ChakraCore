@@ -63,6 +63,10 @@ JITManager::CreateBinding(
     __in UUID * connectionUuid,
     __out RPC_BINDING_HANDLE * bindingHandle)
 {
+#ifdef _CHAKRACOREUWP
+    __debugbreak();  // this is probably broken
+    return S_OK;
+#else
     Assert(IsOOPJITEnabled());
 
     RPC_STATUS status;
@@ -165,6 +169,7 @@ JITManager::CreateBinding(
     *bindingHandle = localBindingHandle;
 
     return HRESULT_FROM_WIN32(status);
+#endif
 }
 
 bool

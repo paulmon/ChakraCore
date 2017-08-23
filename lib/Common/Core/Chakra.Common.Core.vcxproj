@@ -41,7 +41,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DelayLoadLibrary.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EtwTraceCore.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FaultInjection.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GlobalSecurityPolicy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GlobalSecurityPolicy.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Output.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerfCounter.cpp" />
     <None Include="PerfCounterImpl.cpp" />

@@ -67,10 +67,6 @@
 #define _STRINGIZE(x) _STRINGIZE_(x)
 #endif
 
-#ifdef _CHAKRACOREUWP
-#define DebugBreak __debugbreak
-#endif
-
 #define AssertMsg(exp, comment)   \
 do { \
 if (!(exp)) \

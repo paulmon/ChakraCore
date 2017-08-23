@@ -1072,12 +1072,14 @@ NativeCodeGenerator::CodeGen(PageAllocator * pageAllocator, CodeGenWorkItem* wor
         workItem->GetEntryPoint()->GetJitTransferData()->SetIsReady();
     }
 
+#if PDATA_ENABLED
 #if defined(_M_X64)
     XDataAllocation * xdataInfo = HeapNewZ(XDataAllocation);
     xdataInfo->address = (byte*)jitWriteData.xdataAddr;
     XDataAllocator::Register(xdataInfo, jitWriteData.codeAddress, jitWriteData.codeSize);
     epInfo->SetXDataInfo(xdataInfo);
 #endif
+#endif // PDATA_ENABLED
 
 
 #if defined(_M_ARM)

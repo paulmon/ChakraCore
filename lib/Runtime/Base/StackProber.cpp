@@ -68,9 +68,11 @@ StackProber::Initialize()
 
     Assert(stackBottom);
 
+#ifndef _CHAKRACOREUWP
 #ifdef _WIN32
     // Calling this API with stackGuarantee == 0 *gets* current stack guarantee.
     SetThreadStackGuarantee(&stackGuarantee);
+#endif
 #endif
 
     stackLimit = stackBottom + guardPageSize + stackGuarantee + stackOverflowBuffer;

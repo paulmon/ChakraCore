@@ -574,12 +574,18 @@ namespace Js
             return scriptContext->GetLibrary()->GetFalse();
         }
 
+#ifndef _CHAKRACOREUWP
         JavascriptString *argString = JavascriptString::FromVar(args.Values[1]);
+#endif
 
+#ifndef _CHAKRACOREUWP
 #if defined(INTL_ICU)
         return TO_JSBOOL(scriptContext, IcuIntlAdapter::IsWellFormedLanguageTag(argString->GetSz(), argString->GetLength()));
 #else
         return TO_JSBOOL(scriptContext, GetWindowsGlobalizationAdapter(scriptContext)->IsWellFormedLanguageTag(scriptContext, argString->GetSz()));
+#endif
+#else
+        return scriptContext->GetLibrary()->GetFalse();
 #endif
     }
 
@@ -593,6 +599,9 @@ namespace Js
             return scriptContext->GetLibrary()->GetUndefined();
         }
 
+#ifdef _CHAKRACOREUWP
+        return scriptContext->GetLibrary()->GetUndefined();
+#else
         JavascriptString *argString = JavascriptString::FromVar(args.Values[1]);
 
         HRESULT hr;
@@ -622,6 +631,7 @@ namespace Js
         }
 
         return retVal;
+#endif
     }
     Var IntlEngineInterfaceExtensionObject::EntryIntl_ResolveLocaleLookup(RecyclableObject* function, CallInfo callInfo, ...)
     {
@@ -672,6 +682,9 @@ namespace Js
             return scriptContext->GetLibrary()->GetUndefined();
         }
 
+#ifdef _CHAKRACOREUWP
+        return scriptContext->GetLibrary()->GetUndefined();
+#else
         JavascriptString *argString = JavascriptString::FromVar(args.Values[1]);
         PCWSTR passedLocale = argString->GetSz();
 
@@ -706,6 +719,7 @@ namespace Js
 
         return JavascriptString::NewCopySz(wgl->WindowsGetStringRawBuffer(*locale, NULL), scriptContext);
 #endif
+#endif
     }
 
     Var IntlEngineInterfaceExtensionObject::EntryIntl_GetDefaultLocale(RecyclableObject* function, CallInfo callInfo, ...)
@@ -716,13 +730,15 @@ namespace Js
         defaultLocale[0] = '\0';
 
         if (
+#ifndef _CHAKRACOREUWP
 #if defined(INTL_WINGLOB)
             // XPLAT-TODO (doilij): Implement this in PlatformAgnostic
-            GetUserDefaultLocaleName(defaultLocale, _countof(defaultLocale)) == 0
+            GetUserDefaultLocaleName(defaultLocale, _countof(defaultLocale)) == 0 ||
 #else
-            IcuIntlAdapter::GetUserDefaultLocaleName(defaultLocale, _countof(defaultLocale)) == 0
+            IcuIntlAdapter::GetUserDefaultLocaleName(defaultLocale, _countof(defaultLocale)) == 0 ||
 #endif
-            || defaultLocale[0] == '\0')
+#endif
+            defaultLocale[0] == '\0')
         {
 #if defined(INTL_WINGLOB)
             return scriptContext->GetLibrary()->GetUndefined();
@@ -1155,6 +1171,7 @@ namespace Js
             }
         }
 
+#ifndef _CHAKRACOREUWP
         if (givenLocale == nullptr &&
 #if defined(INTL_WINGLOB)
             // XPLAT-TODO (doilij): Implement this in PlatformAgnostic
@@ -1166,6 +1183,7 @@ namespace Js
         {
             JavascriptError::MapAndThrowError(scriptContext, HRESULT_FROM_WIN32(GetLastError()));
         }
+#endif
 
         int compareResult = 0;
         DWORD lastError = S_OK;

@@ -2159,6 +2159,7 @@ namespace Js
             hrMapped = E_OUTOFMEMORY;
             break;
 
+#ifndef _CHAKRACOREUWP
         case SCRIPT_E_RECORDED:
             switch (se.ei.scode)
             {
@@ -2172,6 +2173,7 @@ namespace Js
                 hrMapped = VBSERR_OutOfStack;
                 break;
             }
+#endif
         }
 
         if (FAILED(hrMapped))
@@ -2385,7 +2387,9 @@ namespace Js
                             }
                             else
                             {
+#ifndef _CHAKRACOREUWP
                                 Assert(hrParseCodeGen == SCRIPT_E_RECORDED);
+#endif
                                 hrParseCodeGen = se.ei.scode;
                             }
                         }
@@ -9393,7 +9397,7 @@ namespace Js
         {
             // Unregister xdataInfo before OnCleanup() which may release xdataInfo->address
 #if ENABLE_NATIVE_CODEGEN
-#if defined(_M_X64)
+#if defined(_M_X64) && PDATA_ENABLED
             if (this->xdataInfo != nullptr)
             {
                 XDataAllocator::Unregister(this->xdataInfo);

@@ -54,6 +54,7 @@ void Entropy::Add(const char *buffer, size_t size)
 
 void Entropy::AddIoCounters()
 {
+#ifndef _CHAKRACOREUWP
     IO_COUNTERS ioc = {0};
     if (GetProcessIoCounters(GetCurrentProcess(), &ioc))
     {
@@ -66,14 +67,16 @@ void Entropy::AddIoCounters()
     }
 
     AddCurrentTime();
+#endif
 }
 
 void Entropy::AddThreadCycleTime()
 {
+#ifndef _CHAKRACOREUWP
     LARGE_INTEGER threadCycleTime = {0};
     QueryThreadCycleTime(GetCurrentThread(), (PULONG64)&threadCycleTime);
     Add((char *)&threadCycleTime.LowPart, sizeof(threadCycleTime.LowPart));
-
+#endif
     AddCurrentTime();
 }
 

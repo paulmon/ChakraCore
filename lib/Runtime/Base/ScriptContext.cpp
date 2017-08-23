@@ -3184,7 +3184,9 @@ namespace Js
 
         if (!attach)
         {
+#if defined(ENABLE_SCRIPT_PROFILING) || defined(ENABLE_SCRIPT_DEBUGGING)
             this->UnRegisterDebugThunk();
+#endif
 
             // Remove all breakpoint probes
             this->GetDebugContext()->GetProbeContainer()->RemoveAllProbes();
@@ -3281,7 +3283,9 @@ namespace Js
 
         if (attach)
         {
+#if defined(ENABLE_SCRIPT_PROFILING) || defined(ENABLE_SCRIPT_DEBUGGING)
             this->RegisterDebugThunk();
+#endif
         }
 
 #if ENABLE_PROFILE_INFO
@@ -3872,7 +3876,9 @@ namespace Js
                 // Note: for this we need final IsInDebugMode and NativeCodeGen initialized,
                 //       and inside EnsureScriptContext, which seems appropriate as well,
                 //       it's too early as debugger manager is not registered, thus IsDebuggerEnvironmentAvailable is false.
+#if defined(ENABLE_SCRIPT_PROFILING) || defined(ENABLE_SCRIPT_DEBUGGING)
                 this->RegisterDebugThunk(false/*calledDuringAttach*/);
+#endif
 
                 // TODO: for launch scenario for external and WinRT functions it might be too late to register debug thunk here,
                 //       as we need the thunk registered before FunctionInfo's for built-ins, that may throw, are created.

@@ -20,6 +20,7 @@ SetProcessValidCallTargets(
 #endif
 #endif
 
+#ifndef _CHAKRACOREUWP
 namespace Js
 {
     HRESULT DelayLoadWinRtString::WindowsCreateString(_In_reads_opt_(length) const WCHAR * sourceString, UINT32 length, _Outptr_result_maybenull_ _Result_nullonfailure_ HSTRING * string)
@@ -489,3 +490,4 @@ namespace Js
         return FALSE;
     }
 }
+#endif // _CHAKRACOREUWP

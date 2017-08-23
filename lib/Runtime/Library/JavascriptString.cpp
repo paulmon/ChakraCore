@@ -1362,15 +1362,15 @@ case_2:
 #endif
 
         const char16* pThisStr = pThis->GetString();
-        int thisStrCount = pThis->GetLength();
-
         const char16* pThatStr = pThat->GetString();
-        int thatStrCount = pThat->GetLength();
 
         // xplat-todo: doing a locale-insensitive compare here
         // but need to move locale-specific string comparison to
         // platform agnostic interface
 #ifdef ENABLE_GLOBALIZATION
+        int thisStrCount = pThis->GetLength();
+        int thatStrCount = pThat->GetLength();
+
         LCID lcid = GetUserDefaultLCID();
         int result = CompareStringW(lcid, NULL, pThisStr, thisStrCount, pThatStr, thatStrCount );
         if (result == 0)

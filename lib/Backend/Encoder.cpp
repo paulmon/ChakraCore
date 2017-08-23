@@ -394,8 +394,8 @@ Encoder::Encode()
     m_func->m_prologEncoder.FinalizeUnwindInfo(
         (BYTE*)m_func->GetJITOutput()->GetCodeAddress(), (DWORD)codeSize);
 
-    char * localXdataAddr = nullptr;
 #if ENABLE_OOP_NATIVE_CODEGEN
+    char * localXdataAddr = nullptr;
     if (JITManager::GetJITManager()->IsJITServer())
     {
         localXdataAddr = m_func->GetOOPThreadContext()->GetCodePageAllocators()->AllocLocal((char*)allocation->xdata.address, XDATA_SIZE, localAlloc.segment);
@@ -407,6 +407,7 @@ Encoder::Encode()
     }
     else
 #endif
+#if PDATA_ENABLED
     {
         localXdataAddr = (char*)allocation->xdata.address;
     }
@@ -415,6 +416,7 @@ Encoder::Encode()
         m_func->m_prologEncoder.SizeOfUnwindInfo(),
         allocation->xdata.address,
         (BYTE*)localXdataAddr);
+#endif
 #elif _M_ARM
     m_func->m_unwindInfo.EmitUnwindInfo(m_func->GetJITOutput(), allocation);
     if (m_func->IsOOPJIT())

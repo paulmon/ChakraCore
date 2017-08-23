@@ -597,8 +597,9 @@ namespace Js
     void __declspec(noreturn) JavascriptError::ThrowParserError(ScriptContext* scriptContext, HRESULT hrParser, CompileScriptException* se)
     {
         Assert(FAILED(hrParser));
-
+#ifndef _CHAKRACOREUWP
         hrParser = SCRIPT_E_RECORDED;
+#endif
         EXCEPINFO ei;
         se->GetError(&hrParser, &ei);
 

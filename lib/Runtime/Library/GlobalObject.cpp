@@ -780,6 +780,7 @@ namespace Js
 
     void GlobalObject::ValidateSyntax(ScriptContext* scriptContext, const char16 *source, int sourceLength, bool isGenerator, bool isAsync, void (Parser::*validateSyntax)())
     {
+#ifndef _CHAKRACOREUWP
         Assert(sourceLength >= 0);
 
         HRESULT hr = S_OK;
@@ -837,10 +838,14 @@ namespace Js
             }
             JavascriptError::MapAndThrowError(scriptContext, ei.scode, errorType, &ei);
         }
+#endif
     }
 
     ScriptFunction* GlobalObject::DefaultEvalHelper(ScriptContext* scriptContext, const char16 *source, int sourceLength, ModuleID moduleID, uint32 grfscr, LPCOLESTR pszTitle, BOOL registerDocument, BOOL isIndirect, BOOL strictMode)
     {
+#ifdef _CHAKRACOREUWP
+        return nullptr;
+#else
         Assert(sourceLength >= 0);
         AnalysisAssert(scriptContext);
         if (scriptContext->GetThreadContext()->EvalDisabled())
@@ -992,6 +997,7 @@ namespace Js
 
             return pfuncScript;
         }
+#endif // _CHAKRACOREUWP
     }
 
 #ifdef IR_VIEWER

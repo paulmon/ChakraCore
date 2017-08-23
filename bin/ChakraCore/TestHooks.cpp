@@ -131,7 +131,9 @@ HRESULT OnChakraCoreLoaded(OnChakraCoreLoadedPtr pfChakraCoreLoaded)
 {
     if (pfChakraCoreLoaded == nullptr)
     {
+#ifndef _CHAKRACOREUWP
         pfChakraCoreLoaded = (OnChakraCoreLoadedPtr)GetProcAddress(GetModuleHandle(NULL), "OnChakraCoreLoadedEntry");
+#endif
         if (pfChakraCoreLoaded == nullptr)
         {
             return S_OK;

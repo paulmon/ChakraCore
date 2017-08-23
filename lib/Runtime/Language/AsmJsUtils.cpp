@@ -838,4 +838,20 @@ namespace Js
 #endif
 
 }
+#else
+namespace Js {
+    // TODO: enable JIT?
+    int GetStackSizeForAsmJsUnboxing(ScriptFunction* /*func*/)
+    {
+        int argSize = 32; // convention is to always allocate spill space for rcx,rdx,r8,r9
+        return argSize;
+    }
+
+    uint *GetArgsSizesArray(ScriptFunction* /*func*/)
+    {
+        static uint dummy = 0;
+        return &dummy;
+    }
+
+}
 #endif

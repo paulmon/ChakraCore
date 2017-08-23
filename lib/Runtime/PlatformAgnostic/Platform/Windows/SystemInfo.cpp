@@ -13,11 +13,15 @@ namespace PlatformAgnostic
 
     SystemInfo::PlatformData::PlatformData()
     {
+#ifdef _CHAKRACOREUWP
+        totalRam = static_cast<size_t>(2 * 1024 * 1024); // UWP - hardcode to 2 MB for now
+#else
         ULONGLONG ram;
         if (GetPhysicallyInstalledSystemMemory(&ram) == TRUE)
         {
             totalRam = static_cast<size_t>(ram) * 1024;
         }
+#endif
     }
 
     bool SystemInfo::GetMaxVirtualMemory(size_t *totalAS)

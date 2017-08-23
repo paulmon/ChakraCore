@@ -10,8 +10,21 @@
 char const * const TestEtwEventSink::CreateEventSinkProcName = STRINGIZE(CREATE_EVENTSINK_PROC_NAME);
 TestEtwEventSink* TestEtwEventSink::Instance = NULL;
 
+//#ifdef _CHAKRACOREUWP
+//WINBASEAPI
+//_Ret_maybenull_
+//HMODULE
+//WINAPI
+//LoadLibraryW(
+//    _In_ LPCWSTR lpLibFileName
+//);
+//#endif
+
 bool TestEtwEventSink::Load()
 {
+#ifdef _CHAKRACOREUWP
+    return false;
+#else
     char16 const * dllname = Js::Configuration::Global.flags.TestEtwDll;
     if(!dllname)
     {
@@ -40,6 +53,7 @@ bool TestEtwEventSink::Load()
         Js::Throw::FatalInternalError();
     }
     return true;
+#endif // _CHAKRACOREUWP
 }
 
 bool TestEtwEventSink::IsLoaded()

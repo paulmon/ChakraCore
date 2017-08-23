@@ -9,7 +9,9 @@
 
 #ifdef NTDDI_WIN10_RS2
 #if (NTDDI_VERSION >= NTDDI_WIN10_RS2)
+#ifndef _CHAKRACOREUWP
 #define USEFILEMAP2 1
+#endif
 #endif
 #endif
 
@@ -591,7 +593,11 @@ SectionAllocWrapper::Alloc(LPVOID requestAddress, size_t dwSize, DWORD allocatio
         if ((allocationType & MEM_COMMIT) == MEM_COMMIT)
         {
             const DWORD allocProtectFlags = AutoSystemInfo::Data.IsCFGEnabled() ? PAGE_EXECUTE_RO_TARGETS_INVALID : PAGE_EXECUTE;
+#ifdef _CHAKRACOREUWP
+            address = VirtualAllocFromApp(address, dwSize, MEM_COMMIT, allocProtectFlags);
+#else
             address = VirtualAllocEx(this->process, address, dwSize, MEM_COMMIT, allocProtectFlags);
+#endif
         }
     }
 
@@ -656,7 +662,11 @@ BOOL SectionAllocWrapper::Free(LPVOID lpAddress, size_t dwSize, DWORD dwFreeType
             FreeLocal(localAddr);
         }
         DWORD oldFlags = NULL;
+#ifdef _CHAKRACOREUWP
+        if (!VirtualProtectFromApp(lpAddress, dwSize, PAGE_NOACCESS, &oldFlags))
+#else
         if (!VirtualProtectEx(this->process, lpAddress, dwSize, PAGE_NOACCESS, &oldFlags))
+#endif
         {
             return FALSE;
         }
@@ -712,7 +722,7 @@ PreReservedSectionAllocWrapper::IsInRange(void * address)
         return false;
     }
     bool isInRange = IsInRange(GetPreReservedStartAddress(), address);
-#if DBG
+#if DBG && !_CHAKRACOREUWP
     if (isInRange)
     {
         MEMORY_BASIC_INFORMATION memBasicInfo;
@@ -921,7 +931,11 @@ LPVOID PreReservedSectionAllocWrapper::Alloc(LPVOID lpAddress, size_t dwSize, DW
 #endif
 
             const DWORD allocProtectFlags = AutoSystemInfo::Data.IsCFGEnabled() ? PAGE_EXECUTE_RO_TARGETS_INVALID : PAGE_EXECUTE;
+#ifdef _CHAKRACOREUWP
+            allocatedAddress = (char *)VirtualAllocFromApp(addressToReserve, dwSize, MEM_COMMIT, allocProtectFlags);
+#else
             allocatedAddress = (char *)VirtualAllocEx(this->process, addressToReserve, dwSize, MEM_COMMIT, allocProtectFlags);
+#endif
             if (allocatedAddress == nullptr)
             {
                 MemoryOperationLastError::RecordLastError();
@@ -978,7 +992,11 @@ PreReservedSectionAllocWrapper::Free(LPVOID lpAddress, size_t dwSize, DWORD dwFr
     }
 
     DWORD oldFlags = NULL;
-    if(!VirtualProtectEx(this->process, lpAddress, dwSize, PAGE_NOACCESS, &oldFlags))
+#ifdef _CHAKRACOREUWP
+    if (!VirtualProtectFromApp(lpAddress, dwSize, PAGE_NOACCESS, &oldFlags))
+#else
+    if (!VirtualProtectEx(this->process, lpAddress, dwSize, PAGE_NOACCESS, &oldFlags))
+#endif
     {
         return FALSE;
     }
