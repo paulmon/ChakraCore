@@ -377,11 +377,11 @@ bool EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBufferForIn
         return false;
     }
 
-#ifdef _CHAKRACOREUWP
-    __debugbreak();
-#else
+//#ifdef _CHAKRACOREUWP
+//    __debugbreak();
+//#else
     FlushInstructionCache(this->processHandle, pBuffer, bufferSize);
-#endif
+//#endif
 
     return true;
 }
@@ -403,15 +403,15 @@ EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBuffer(TEmitBuff
     Assert(allocation != nullptr);
 
     BYTE *currentDestBuffer = destBuffer + allocation->GetBytesUsed();
-#ifndef _CHAKRACOREUWP
+//#ifndef _CHAKRACOREUWP
     char *bufferToFlush = allocation->allocation->address + allocation->GetBytesUsed();
-#endif
+//#endif
     Assert(allocation->BytesFree() >= bytes + alignPad);
 
     size_t bytesLeft = bytes + alignPad;
-#ifndef _CHAKRACOREUWP
+//#ifndef _CHAKRACOREUWP
     size_t sizeToFlush = bytesLeft;
-#endif
+//#endif
 
     // Copy the contents and set the alignment pad
     while(bytesLeft != 0)
@@ -471,11 +471,11 @@ EmitBufferManager<TAlloc, TPreReservedAlloc, SyncObject>::CommitBuffer(TEmitBuff
             return false;
         }
     }
-#ifdef _CHAKRACOREUWP
-    __debugbreak();
-#else
+//#ifdef _CHAKRACOREUWP
+//    __debugbreak();
+//#else
     FlushInstructionCache(this->processHandle, bufferToFlush, sizeToFlush);
-#endif
+//#endif
 #if DBG_DUMP
     this->totalBytesCode += bytes;
 #endif

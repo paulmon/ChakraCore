@@ -12,7 +12,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <NoThrowNewLib>nothrownew.obj</NoThrowNewLib>
-    <BuildJIT>False</BuildJIT>
+    <!-- <BuildJIT>False</BuildJIT> -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunCodeAnalysis)'=='' AND '$(Configuration)'=='Release'">
     <RunCodeAnalysis>$(BuildWithCodeAnalysis)</RunCodeAnalysis>

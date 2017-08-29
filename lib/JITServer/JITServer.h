@@ -112,9 +112,7 @@ struct AutoReleaseThreadContext
     {
         if (threadContext)
         {
-#ifndef _CHAKRACOREUWP
             threadContext->Release();
-#endif
         }
     }
 
@@ -126,7 +124,6 @@ struct AutoReleaseScriptContext
     AutoReleaseScriptContext(ServerScriptContext* scriptContext)
         :scriptContext(scriptContext)
     {
-#ifndef _CHAKRACOREUWP
         if (!ServerContextManager::CheckLivenessAndAddref(scriptContext))
         {
             // Don't assert here because ThreadContext can be closed before scriptContext closing call
@@ -136,12 +133,10 @@ struct AutoReleaseScriptContext
             throw ContextClosedException();
         }
         threadContext = scriptContext->GetThreadContext();
-#endif
     }
 
     ~AutoReleaseScriptContext()
     {
-#ifndef _CHAKRACOREUWP
         if (scriptContext)
         {
             scriptContext->Release();
@@ -150,7 +145,6 @@ struct AutoReleaseScriptContext
         {
             threadContext->Release();
         }
-#endif
     }
 
     ServerScriptContext* scriptContext;

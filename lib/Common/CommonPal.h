@@ -478,18 +478,145 @@ GetTempFileNameA(
     _Out_writes_(MAX_PATH) LPSTR lpTempFileName
 );
 
-//WINBASEAPI
-//_Ret_maybenull_
-//HMODULE
-//WINAPI
-//LoadLibraryW(
-//    _In_ LPCWSTR lpLibFileName
-//);
+typedef HMODULE(WINAPI* LOADLIBRARYEXW)(LPCWSTR, HANDLE, DWORD);
+_Ret_maybenull_
+inline
+HMODULE
+WINAPI
+LoadLibraryExW(
+    _In_ LPCWSTR lpLibFileName,
+    _Reserved_ HANDLE hFile,
+    _In_ DWORD dwFlags
+)
+{
+    MEMORY_BASIC_INFORMATION info = {};
+    if (VirtualQuery(VirtualQuery, &info, sizeof(info)))
+    {
+        auto kernelAddr = (HMODULE)info.AllocationBase;
+        LOADLIBRARYEXW loadlibraryPtr = (LOADLIBRARYEXW)GetProcAddress(kernelAddr, "LoadLibraryExW");
+        return loadlibraryPtr(lpLibFileName, hFile, dwFlags);
+    }
+    return static_cast<HMODULE>(nullptr);
+}
+
+#define LoadLibraryEx LoadLibraryExW
+
+typedef HMODULE(WINAPI* LOADLIBRARYW)(LPCWSTR);
+
+_Ret_maybenull_
+inline
+HMODULE
+WINAPI
+LoadLibraryW(
+    _In_ LPCWSTR lpLibFileName
+)
+{
+    MEMORY_BASIC_INFORMATION info = {};
+    if (VirtualQuery(VirtualQuery, &info, sizeof(info)))
+    {
+        auto kernelAddr = (HMODULE)info.AllocationBase;
+        LOADLIBRARYW loadlibraryPtr = (LOADLIBRARYW)GetProcAddress(kernelAddr, "LoadLibraryW");
+        return loadlibraryPtr(lpLibFileName);
+    }
+    return static_cast<HMODULE>(nullptr);
+}
+
 
 inline void DebugBreak()
 {
     __debugbreak();
 }
+
+WINBASEAPI
+BOOL
+WINAPI
+FlushInstructionCache(
+    _In_ HANDLE hProcess,
+    _In_reads_bytes_opt_(dwSize) LPCVOID lpBaseAddress,
+    _In_ SIZE_T dwSize
+);
+
+WINBASEAPI
+_Ret_maybenull_
+HRSRC
+WINAPI
+FindResourceExW(
+    _In_opt_ HMODULE hModule,
+    _In_ LPCWSTR lpType,
+    _In_ LPCWSTR lpName,
+    _In_ WORD wLanguage
+);
+
+#ifdef UNICODE
+#define FindResourceEx  FindResourceExW
+#endif
+
+WINBASEAPI
+_Ret_maybenull_
+HGLOBAL
+WINAPI
+LoadResource(
+    _In_opt_ HMODULE hModule,
+    _In_ HRSRC hResInfo
+);
+
+WINBASEAPI
+LPVOID
+WINAPI
+LockResource(
+    _In_ HGLOBAL hResData
+);
+
+WINBASEAPI
+DWORD
+WINAPI
+SizeofResource(
+    _In_opt_ HMODULE hModule,
+    _In_ HRSRC hResInfo
+);
+
+WINBASEAPI
+LCID
+WINAPI
+GetUserDefaultLCID(void);
+
+// For Windows Vista and above GetDateFormatEx is preferred
+WINBASEAPI
+int
+WINAPI
+GetDateFormatW(
+    _In_ LCID Locale,
+    _In_ DWORD dwFlags,
+    _In_opt_ CONST SYSTEMTIME * lpDate,
+    _In_opt_ LPCWSTR lpFormat,
+    _Out_writes_opt_(cchDate) LPWSTR lpDateStr,
+    _In_ int cchDate
+); 
+
+// For Windows Vista and above GetTimeFormatEx is preferred
+WINBASEAPI
+int
+WINAPI
+GetTimeFormatW(
+    _In_ LCID Locale,
+    _In_ DWORD dwFlags,
+    _In_opt_ CONST SYSTEMTIME * lpTime,
+    _In_opt_ LPCWSTR lpFormat,
+    _Out_writes_opt_(cchTime) LPWSTR lpTimeStr,
+    _In_ int cchTime
+);
+
+WINBASEAPI
+int
+WINAPI
+CompareStringW(
+    _In_ LCID Locale,
+    _In_ DWORD dwCmpFlags,
+    _In_NLS_string_(cchCount1) PCNZWCH lpString1,
+    _In_ int cchCount1,
+    _In_NLS_string_(cchCount2) PCNZWCH lpString2,
+    _In_ int cchCount2
+);
 
 #endif // _CHAKRACOREUWP
 

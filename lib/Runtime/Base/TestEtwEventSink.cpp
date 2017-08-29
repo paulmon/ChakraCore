@@ -10,16 +10,6 @@
 char const * const TestEtwEventSink::CreateEventSinkProcName = STRINGIZE(CREATE_EVENTSINK_PROC_NAME);
 TestEtwEventSink* TestEtwEventSink::Instance = NULL;
 
-//#ifdef _CHAKRACOREUWP
-//WINBASEAPI
-//_Ret_maybenull_
-//HMODULE
-//WINAPI
-//LoadLibraryW(
-//    _In_ LPCWSTR lpLibFileName
-//);
-//#endif
-
 bool TestEtwEventSink::Load()
 {
 #ifdef _CHAKRACOREUWP

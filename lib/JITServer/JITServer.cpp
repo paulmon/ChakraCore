@@ -11,10 +11,6 @@ HRESULT JsInitializeJITServer(
     __in_opt void* securityDescriptor,
     __in_opt void* alpcSecurityDescriptor)
 {
-#ifdef _CHAKRACOREUWP
-    __debugbreak();
-    return E_NOTIMPL;
-#else
     RPC_STATUS status;
     RPC_BINDING_VECTOR* bindingVector = NULL;
     UUID_VECTOR uuidVector;
@@ -85,15 +81,11 @@ HRESULT JsInitializeJITServer(
     status = RpcServerListen(1, RPC_C_LISTEN_MAX_CALLS_DEFAULT, FALSE);
 
     return status;
-#endif
 }
 
 HRESULT
 ShutdownCommon()
 {
-#ifdef _CHAKRACOREUWP
-    return S_OK;
-#else
     HRESULT status = RpcMgmtStopServerListening(NULL);
     if (status != RPC_S_OK)
     {
@@ -105,7 +97,6 @@ ShutdownCommon()
     ServerContextManager::Shutdown();
     PageAllocatorPool::Shutdown();
     return status;
-#endif
 }
 
 HRESULT
@@ -130,7 +121,6 @@ __RPC_USER PSCRIPTCONTEXT_HANDLE_rundown(__RPC__in PSCRIPTCONTEXT_HANDLE phConte
 
 HRESULT CheckModuleAddress(HANDLE process, LPCVOID remoteImageBase, LPCVOID localImageBase)
 {
-#ifndef _CHAKRACOREUWP
     byte remoteImageHeader[0x1000];
     MEMORY_BASIC_INFORMATION remoteImageInfo;
     SIZE_T resultBytes = VirtualQueryEx(process, (LPCVOID)remoteImageBase, &remoteImageInfo, sizeof(remoteImageInfo));
@@ -193,7 +183,7 @@ HRESULT CheckModuleAddress(HANDLE process, LPCVOID remoteImageBase, LPCVOID loca
     {
         return E_ACCESSDENIED;
     }
-#endif
+
     return S_OK;
 }
 
@@ -207,9 +197,6 @@ ServerInitializeThreadContext(
     /* [out] */ __RPC__out intptr_t *prereservedRegionAddr,
     /* [out] */ __RPC__out intptr_t *jitThunkAddr)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     if (threadContextInfoAddress == nullptr || prereservedRegionAddr == nullptr)
     {
         Assert(false);
@@ -276,7 +263,6 @@ ServerInitializeThreadContext(
 
         return hr;
     });
-#endif
 }
 
 HRESULT
@@ -286,9 +272,6 @@ ServerInitializeScriptContext(
     /* [in] */ __RPC__in PTHREADCONTEXT_HANDLE threadContextInfoAddress,
     /* [out] */ __RPC__deref_out_opt PPSCRIPTCONTEXT_HANDLE scriptContextInfoAddress)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     if (scriptContextInfoAddress == nullptr || threadContextInfoAddress == nullptr)
     {
         Assert(false);
@@ -310,7 +293,6 @@ ServerInitializeScriptContext(
 #endif
         return S_OK;
     });
-#endif
 }
 #pragma warning(pop)
 
@@ -319,9 +301,6 @@ ServerCleanupThreadContext(
     /* [in] */ handle_t binding,
     /* [in] */ __RPC__deref_inout_opt PPTHREADCONTEXT_HANDLE threadContextInfoAddress)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     if (threadContextInfoAddress == nullptr)
     {
         Assert(false);
@@ -344,7 +323,6 @@ ServerCleanupThreadContext(
         ServerContextManager::UnRegisterThreadContext(threadContextInfo);
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -353,9 +331,6 @@ ServerUpdatePropertyRecordMap(
     /* [in] */ __RPC__in PTHREADCONTEXT_HANDLE threadContextInfoAddress,
     /* [in] */ __RPC__in_opt BVSparseNodeIDL * updatedPropsBVHead)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerThreadContext * threadContextInfo = (ServerThreadContext*)DecodePointer(threadContextInfoAddress);
 
     if (threadContextInfo == nullptr)
@@ -372,7 +347,6 @@ ServerUpdatePropertyRecordMap(
 
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -382,9 +356,6 @@ ServerAddDOMFastPathHelper(
     /* [in] */ intptr_t funcInfoAddr,
     /* [in] */ int helper)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerScriptContext * scriptContextInfo = (ServerScriptContext*)DecodePointer(scriptContextInfoAddress);
 
     if (scriptContextInfo == nullptr)
@@ -398,7 +369,6 @@ ServerAddDOMFastPathHelper(
         scriptContextInfo->AddToDOMFastPathHelperMap(funcInfoAddr, (IR::JnHelperMethod)helper);
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -408,9 +378,6 @@ ServerAddModuleRecordInfo(
     /* [in] */ unsigned int moduleId,
     /* [in] */ intptr_t localExportSlotsAddr)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerScriptContext * serverScriptContext = (ServerScriptContext*)DecodePointer(scriptContextInfoAddress);
     if (serverScriptContext == nullptr)
     {
@@ -423,7 +390,7 @@ ServerAddModuleRecordInfo(
         serverScriptContext->AddModuleRecordInfo(moduleId, localExportSlotsAddr);
         return S_OK;
     });
-#endif
+
 }
 
 HRESULT
@@ -432,9 +399,6 @@ ServerSetWellKnownHostTypeId(
     /* [in] */ __RPC__in PTHREADCONTEXT_HANDLE threadContextInfoAddress,
     /* [in] */ int typeId)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerThreadContext * threadContextInfo = (ServerThreadContext*)DecodePointer(threadContextInfoAddress);
 
     if (threadContextInfo == nullptr)
@@ -448,7 +412,6 @@ ServerSetWellKnownHostTypeId(
         threadContextInfo->SetWellKnownHostTypeId((Js::TypeId)typeId);
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -456,9 +419,6 @@ ServerCleanupScriptContext(
     /* [in] */ handle_t binding,
     /* [in] */ __RPC__deref_inout_opt PPSCRIPTCONTEXT_HANDLE scriptContextInfoAddress)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     if (scriptContextInfoAddress == nullptr)
     {
         Assert(false);
@@ -485,7 +445,6 @@ ServerCleanupScriptContext(
     HeapDelete(scriptContextInfo);
 
     return S_OK;
-#endif
 }
 
 HRESULT
@@ -493,9 +452,6 @@ ServerCloseScriptContext(
     /* [in] */ handle_t binding,
     /* [in] */ __RPC__in PSCRIPTCONTEXT_HANDLE scriptContextInfoAddress)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerScriptContext * scriptContextInfo = (ServerScriptContext*)DecodePointer(scriptContextInfoAddress);
 
     if (scriptContextInfo == nullptr)
@@ -518,7 +474,6 @@ ServerCloseScriptContext(
 
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -527,10 +482,6 @@ ServerDecommitInterpreterBufferManager(
     /* [in] */ __RPC__in PSCRIPTCONTEXT_HANDLE scriptContextInfoAddress,
     /* [in] */ boolean asmJsManager)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
-
     ServerScriptContext * scriptContext = (ServerScriptContext *)DecodePointer((void*)scriptContextInfoAddress);
 
     if (scriptContext == nullptr)
@@ -544,7 +495,6 @@ ServerDecommitInterpreterBufferManager(
         scriptContext->DecommitEmitBufferManager(asmJsManager != FALSE);
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -554,9 +504,6 @@ ServerNewInterpreterThunkBlock(
     /* [in] */ __RPC__in InterpreterThunkInputIDL * thunkInput,
     /* [out] */ __RPC__out InterpreterThunkOutputIDL * thunkOutput)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     memset(thunkOutput, 0, sizeof(InterpreterThunkOutputIDL));
 
     ServerScriptContext * scriptContext = (ServerScriptContext *)DecodePointer(scriptContextInfo);
@@ -635,7 +582,6 @@ ServerNewInterpreterThunkBlock(
 
         return S_OK;
     });
-#endif
 }
 
 #if DBG
@@ -647,9 +593,6 @@ ServerIsInterpreterThunkAddr(
     /* [in] */ boolean asmjsThunk,
     /* [out] */ __RPC__out boolean * result)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerScriptContext * context = (ServerScriptContext*)DecodePointer((void*)scriptContextInfoAddress);
 
     if (context == nullptr)
@@ -667,7 +610,6 @@ ServerIsInterpreterThunkAddr(
     *result = manager->IsInHeap((void*)address);
 
     return S_OK;
-#endif
 }
 #endif
 
@@ -678,9 +620,6 @@ ServerFreeAllocation(
     /* [in] */ intptr_t codeAddress,
     /* [in] */ intptr_t thunkAddress)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerThreadContext * context = (ServerThreadContext*)DecodePointer(threadContextInfo);
 
     if (context == nullptr)
@@ -704,7 +643,6 @@ ServerFreeAllocation(
 #endif
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -714,9 +652,6 @@ ServerIsNativeAddr(
     /* [in] */ intptr_t address,
     /* [out] */ __RPC__out boolean * result)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     if (result == nullptr)
     {
         Assert(false);
@@ -751,7 +686,6 @@ ServerIsNativeAddr(
 
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -760,9 +694,6 @@ ServerSetIsPRNGSeeded(
     /* [in] */ __RPC__in PSCRIPTCONTEXT_HANDLE scriptContextInfoAddress,
     /* [in] */ boolean value)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     ServerScriptContext * scriptContextInfo = (ServerScriptContext*)DecodePointer(scriptContextInfoAddress);
 
     if (scriptContextInfo == nullptr)
@@ -776,7 +707,6 @@ ServerSetIsPRNGSeeded(
         scriptContextInfo->SetIsPRNGSeeded(value != FALSE);
         return S_OK;
     });
-#endif
 }
 
 HRESULT
@@ -786,9 +716,6 @@ ServerRemoteCodeGen(
     /* [in] */ __RPC__in CodeGenWorkItemIDL *workItemData,
     /* [out] */ __RPC__out JITOutputIDL *jitData)
 {
-#ifdef _CHAKRACOREUWP
-    return E_NOTIMPL;
-#else
     memset(jitData, 0, sizeof(JITOutputIDL));
 
     ServerScriptContext * scriptContextInfo = (ServerScriptContext*)DecodePointer(scriptContextInfoAddress);
@@ -900,7 +827,6 @@ ServerRemoteCodeGen(
         Assert(jitData->codeSize);
         return S_OK;
     });
-#endif
 }
 
 JsUtil::BaseHashSet<ServerThreadContext*, HeapAllocator> ServerContextManager::threadContexts(&HeapAllocator::Instance);
@@ -922,7 +848,6 @@ void ServerContextManager::UnRegisterThreadContext(ServerThreadContext* threadCo
 {
     AutoCriticalSection autoCS(&cs);
     threadContexts.Remove(threadContext);
-#ifndef _CHAKRACOREUWP
     auto iter = scriptContexts.GetIteratorWithRemovalSupport();
     while (iter.IsValid())
     {
@@ -937,7 +862,6 @@ void ServerContextManager::UnRegisterThreadContext(ServerThreadContext* threadCo
         }
         iter.MoveNext();
     }
-#endif
 }
 
 void ServerContextManager::RegisterScriptContext(ServerScriptContext* scriptContext)
@@ -954,7 +878,6 @@ void ServerContextManager::UnRegisterScriptContext(ServerScriptContext* scriptCo
 
 bool ServerContextManager::CheckLivenessAndAddref(ServerScriptContext* context)
 {
-#ifndef _CHAKRACOREUWP
     AutoCriticalSection autoCS(&cs);
     if (scriptContexts.LookupWithKey(context))
     {
@@ -965,7 +888,6 @@ bool ServerContextManager::CheckLivenessAndAddref(ServerScriptContext* context)
             return true;
         }
     }
-#endif
     return false;
 }
 bool ServerContextManager::CheckLivenessAndAddref(ServerThreadContext* context)
@@ -975,9 +897,7 @@ bool ServerContextManager::CheckLivenessAndAddref(ServerThreadContext* context)
     {
         if (!context->IsClosed())
         {
-#ifndef _CHAKRACOREUWP
             context->AddRef();
-#endif
             return true;
         }
     }

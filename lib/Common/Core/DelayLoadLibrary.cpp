@@ -20,26 +20,46 @@ DelayLoadLibrary::~DelayLoadLibrary()
     }
 }
 
+//#ifdef _CHAKRACOREUWP
+//
+//typedef HMODULE(WINAPI* LOADLIBRARYEXW)(LPCWSTR, HANDLE, DWORD);
+//_Ret_maybenull_
+//HMODULE
+//WINAPI
+//LoadLibraryExW(
+//    _In_ LPCWSTR lpLibFileName,
+//    _Reserved_ HANDLE hFile,
+//    _In_ DWORD dwFlags
+//)
+//{
+//    MEMORY_BASIC_INFORMATION info = {};
+//    if (VirtualQuery(VirtualQuery, &info, sizeof(info)))
+//    {
+//        auto kernelAddr = (HMODULE)info.AllocationBase;
+//        LOADLIBRARYEXW loadlibraryPtr = (LOADLIBRARYEXW)GetProcAddress(kernelAddr, "LoadLibraryExW");
+//        return loadlibraryPtr(lpLibFileName, hFile, dwFlags);
+//    }
+//    return static_cast<HMODULE>(nullptr);
+//}
+//
+//#endif
+
 void DelayLoadLibrary::Ensure(DWORD dwFlags)
 {
     if (!m_isInit)
     {
-#ifndef _CHAKRACOREUWP
         m_hModule = LoadLibraryEx(GetLibraryName(), nullptr, dwFlags);
         m_isInit = true;
-#else
-        __debugbreak();
-#endif
     }
 }
 
+#ifdef _CHAKRACOREUWP
+#define LOAD_LIBRARY_SEARCH_SYSTEM32        0x00000800
+#endif
+
 void DelayLoadLibrary::EnsureFromSystemDirOnly()
 {
-#ifndef _CHAKRACOREUWP
     Ensure(LOAD_LIBRARY_SEARCH_SYSTEM32);
-#else
-    __debugbreak();
-#endif
 }
 
 

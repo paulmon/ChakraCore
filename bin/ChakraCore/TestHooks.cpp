@@ -127,13 +127,40 @@ void __stdcall NotifyUnhandledException(PEXCEPTION_POINTERS exceptionInfo)
 #undef FLAG_NumberTrioSet
 #undef FLAG_NumberRange
 
+//#ifdef _CHAKRACOREUWP
+//
+//typedef HMODULE(WINAPI* LOADLIBRARYEXW)(LPCWSTR, HANDLE, DWORD);
+//_Ret_maybenull_
+//HMODULE
+//WINAPI
+//LoadLibraryEx(
+//    _In_ LPCWSTR lpLibFileName,
+//    _Reserved_ HANDLE hFile,
+//    _In_ DWORD dwFlags
+//);
+////{
+////    MEMORY_BASIC_INFORMATION info = {};
+////    if (VirtualQuery(VirtualQuery, &info, sizeof(info)))
+////    {
+////        auto kernelAddr = (HMODULE)info.AllocationBase;
+////        LOADLIBRARYEXW loadlibraryPtr = (LOADLIBRARYEXW)GetProcAddress(kernelAddr, "LoadLibraryExW");
+////        return loadlibraryPtr(lpLibFileName, hFile, dwFlags);
+////    }
+////    return static_cast<HMODULE>(nullptr);
+////}
+//
+//#endif
+
+
 HRESULT OnChakraCoreLoaded(OnChakraCoreLoadedPtr pfChakraCoreLoaded)
 {
     if (pfChakraCoreLoaded == nullptr)
     {
-#ifndef _CHAKRACOREUWP
-        pfChakraCoreLoaded = (OnChakraCoreLoadedPtr)GetProcAddress(GetModuleHandle(NULL), "OnChakraCoreLoadedEntry");
-#endif
+        HMODULE h = LoadLibraryEx(L"api-ms-win-core-libraryloader-l1-1-0.dll", nullptr, 0);
+        typedef HMODULE(WINAPI* GETMODULEHANDLEW)(LPCWSTR lpModuleName);
+        GETMODULEHANDLEW pGetModuleHandle = (GETMODULEHANDLEW)GetProcAddress(h, "GetModuleHandleW");
+        HMODULE hh = pGetModuleHandle(NULL);
+        pfChakraCoreLoaded = (OnChakraCoreLoadedPtr)GetProcAddress(hh, "OnChakraCoreLoadedEntry");
         if (pfChakraCoreLoaded == nullptr)
         {
             return S_OK;

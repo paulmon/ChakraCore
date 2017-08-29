@@ -109,7 +109,7 @@
 #endif
 //#define INTL_ICU_ALLOW_HYBRID 1       // NOTE: uncomment this line to test INTL_ICU SxS with INTL_WINGLOB while INTL_ICU is in-development
 #endif
-#if defined(_WIN32) && !defined(_CHAKRACOREUWP) && (!defined(INTL_ICU) || (defined(INTL_ICU) && defined(INTL_ICU_ALLOW_HYBRID)))
+#if defined(_WIN32) && (!defined(INTL_ICU) || (defined(INTL_ICU) && defined(INTL_ICU_ALLOW_HYBRID)))
 #define INTL_WINGLOB 1
 #endif
 
@@ -120,11 +120,13 @@
 #define SUPPORT_FIXED_FIELDS_ON_PATH_TYPES          // *** TODO: Won't build if disabled currently
 
 // xplat-todo: revisit these features
-#if defined(_WIN32) && !defined(_CHAKRACOREUWP) 
+#ifdef _WIN32
 // dep: TIME_ZONE_INFORMATION, DaylightTimeHelper, Windows.Globalization
 #define ENABLE_GLOBALIZATION
+#ifndef _CHAKRACOREUWP
 // dep: IActiveScriptProfilerCallback, IActiveScriptProfilerHeapEnum
 #define ENABLE_SCRIPT_PROFILING
+#endif // _CHAKRACOREUWP
 // #ifndef __clang__
 // xplat-todo: change DISABLE_SEH to ENABLE_SEH and move here
 // #define ENABLE_SIMDJS
@@ -241,7 +243,7 @@
 #endif
 
 #if ENABLE_NATIVE_CODEGEN
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_CHAKRACOREUWP)
 #define ENABLE_OOP_NATIVE_CODEGEN 1     // Out of process JIT
 #endif
 
